@@ -1,7 +1,7 @@
 # Проект «Киноман»
 
 * Студент: [Алексей Свирин](https://up.htmlacademy.ru/ecmascript/19/user/1023079).
-* Наставник: `Николай Думчев`.
+* Наставник: [Николай Думчев](https://htmlacademy.ru/profile/nikopol-fw)
 
 ---
 
