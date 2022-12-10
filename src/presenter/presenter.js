@@ -10,10 +10,10 @@ const FILMS_AMOUNT = 5;
 
 export default class FilmPresenter {
 
-  constructor(container) {
+  constructor(container, headerContainer, bodyContainer) {
     this.container = container;
-    this.header = document.querySelector('.header');
-    this.body = document.querySelector('body');
+    this.header = headerContainer;
+    this.body = bodyContainer;
   }
 
   init() {
