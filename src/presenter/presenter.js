@@ -1,33 +1,32 @@
 import { render } from '../render.js';
-import filterView from '../view/sort-and-filter-view.js';
-import filmContainerView from '../view/films-container-view.js';
-import showMoreButtonView from '../view/show-more-button-view.js';
-import filmCardView from '../view/film-card-view.js';
-import userProfileView from '../view/user-profile-view.js';
-import popupView from '../view/popup-view.js';
+import FilterView from '../view/sort-and-filter-view.js';
+import FilmContainerView from '../view/films-container-view.js';
+import ShowMoreButtonView from '../view/show-more-button-view.js';
+import FilmCardView from '../view/film-card-view.js';
+import UserProfileView from '../view/user-profile-view.js';
+import PopupView from '../view/popup-view.js';
 
-const header = document.querySelector('.header');
-const body = document.querySelector('body');
+const FILMS_AMOUNT = 5;
 
 export default class FilmPresenter {
 
   constructor(container) {
     this.container = container;
+    this.header = document.querySelector('.header');
+    this.body = document.querySelector('body');
   }
 
   init() {
-    render(new userProfileView(), header);   //использовать new class или создавать константы component и обращаться к ним как к свойствам this.component?
-    render(new filterView(), this.container);   //можно ли убрать скобки при создании экземпляра?
-    render(new filmContainerView(), this.container);
+    const filmListContainer = new FilmContainerView();
 
-    const filmList = document.querySelector('.films-list__container');
+    render(new UserProfileView(), this.header);
+    render(new FilterView(), this.container);
+    render(filmListContainer, this.container);
 
-    for(let i = 0; i < 5; i++) {
-      render(new filmCardView(), filmList);
+    for(let i = 0; i < FILMS_AMOUNT; i++) {
+      render(new FilmCardView(), filmListContainer.getFilmListContainer());
     }
-    render(new showMoreButtonView(), this.container);
-    render(new popupView(), body);
+    render(new ShowMoreButtonView(), this.container);
+    render(new PopupView(), this.body);
   }
 }
-
-//presenter - посредник между model и view. зачем он все таки нужен?
