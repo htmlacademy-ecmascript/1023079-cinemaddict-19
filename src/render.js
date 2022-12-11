@@ -16,4 +16,8 @@ function render(component, container, place = RenderPosition.BEFOREEND) {
   container.insertAdjacentElement(place, component.getElement());
 }
 
+export function getRandomArrayElement(items) {
+  return items[Math.floor(Math.random() * items.length)];
+}
+
 export {RenderPosition, createElement, render};

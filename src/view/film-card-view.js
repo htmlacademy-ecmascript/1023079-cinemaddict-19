@@ -3,8 +3,12 @@ import { createNewFilmCardTemplate } from './film-card-view.template.js';
 
 
 export default class FilmCardView {
+  constructor(film) {
+    this.film = film;
+  }
+
   getTemplate() {
-    return createNewFilmCardTemplate();
+    return createNewFilmCardTemplate(this.film);
   }
 
   getElement() {

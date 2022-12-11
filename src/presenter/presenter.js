@@ -6,14 +6,14 @@ import FilmCardView from '../view/film-card-view.js';
 import UserProfileView from '../view/user-profile-view.js';
 import PopupView from '../view/popup-view.js';
 
-const FILMS_AMOUNT = 5;
 
 export default class FilmPresenter {
 
-  constructor(mainContainer, headerContainer, bodyContainer) {
+  constructor(mainContainer, headerContainer, bodyContainer, films) {
     this.container = mainContainer;
     this.header = headerContainer;
     this.body = bodyContainer;
+    this.films = films;
   }
 
   init() {
@@ -23,10 +23,10 @@ export default class FilmPresenter {
     render(new FilterView(), this.container);
     render(filmListContainer, this.container);
 
-    for(let i = 0; i < FILMS_AMOUNT; i++) {
-      render(new FilmCardView(), filmListContainer.getFilmListContainer());
+    for(let i = 0; i < this.films.length; i++) {
+      render(new FilmCardView(this.films[i]), filmListContainer.getFilmListContainer());
     }
     render(new ShowMoreButtonView(), this.container);
-    render(new PopupView(), this.body);
+    // render(new PopupView(), this.body);
   }
 }
