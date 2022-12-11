@@ -4,7 +4,6 @@ import FilmContainerView from '../view/films-container-view.js';
 import ShowMoreButtonView from '../view/show-more-button-view.js';
 import FilmCardView from '../view/film-card-view.js';
 import UserProfileView from '../view/user-profile-view.js';
-import PopupView from '../view/popup-view.js';
 
 
 export default class FilmPresenter {
