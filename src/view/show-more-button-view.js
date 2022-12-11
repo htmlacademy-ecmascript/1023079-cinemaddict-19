@@ -1,8 +1,5 @@
 import {createElement} from '../render.js';
-
-function createShowMoreButtonTemplate () {
-  return '<button class="films-list__show-more">Show more</button>';
-}
+import { createShowMoreButtonTemplate } from './show-more-button.template.js';
 
 export default class ShowMoreButtonView {
   getTemplate() {
