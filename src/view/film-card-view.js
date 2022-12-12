@@ -3,8 +3,9 @@ import { createNewFilmCardTemplate } from './film-card-view.template.js';
 
 
 export default class FilmCardView {
-  constructor(film) {
+  constructor(film, commentsAmount = 0) {
     this.film = film;
+    this.film.commentsCount = commentsAmount.length;
   }
 
   getTemplate() {
