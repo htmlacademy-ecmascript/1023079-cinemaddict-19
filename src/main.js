@@ -6,8 +6,8 @@ const mainContainer = document.querySelector('.main');
 const header = document.querySelector('.header');
 const body = document.querySelector('body');
 
-const filmsModel = new FilmsModel;
-const commentsModel = new CommentsModel;
+const filmsModel = new FilmsModel();
+const commentsModel = new CommentsModel();
 
 const presenter = new FilmPresenter(mainContainer, header, body, filmsModel, commentsModel);
 
