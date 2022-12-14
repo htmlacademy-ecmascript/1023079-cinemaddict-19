@@ -1,4 +1,4 @@
-import { getRandomArrayElement } from '../render.js';
+import { getRandomArrayElement } from '../utils.js';
 
 export const mockFilms = [
 
