@@ -28,7 +28,7 @@ export default class FilmPresenter {
     const filmListContainer = filmContainer.getFilmListContainer();
 
     this.films.forEach((film) => {
-      const relevantCommentsAmount = this.comments.filter((comment) => (comment.id === film.id));
+      const relevantCommentsAmount = this.comments.filter((comment) => (comment.id === film.id)).length;
       render(new FilmCardView(film, relevantCommentsAmount), filmListContainer);
     });
 
