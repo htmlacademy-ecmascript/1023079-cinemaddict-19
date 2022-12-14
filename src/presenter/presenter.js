@@ -18,18 +18,20 @@ export default class FilmPresenter {
   }
 
   init() {
-    const filmListContainer = new FilmContainerView();
+    const filmContainer = new FilmContainerView();
     this.films = this.filmsModel.getFilms();
     this.comments = this.commentModel.getComments();
 
     render(new UserProfileView(), this.header);
     render(new FilterView(), this.container);
-    render(filmListContainer, this.container);
+    render(filmContainer, this.container);
+    const filmListContainer = filmContainer.getFilmListContainer();
 
-    for(let i = 0; i < this.films.length; i++) {
-      const relevantCommentsAmount = this.comments.filter((comment) => (comment.id === this.films[i].id));
-      render(new FilmCardView(this.films[i], relevantCommentsAmount), filmListContainer.getFilmListContainer());
-    }
+    this.films.forEach((film) => {
+      const relevantCommentsAmount = this.comments.filter((comment) => (comment.id === film.id));
+      render(new FilmCardView(film, relevantCommentsAmount), filmListContainer);
+    });
+
     render(new ShowMoreButtonView(), this.container);
 
     const commentsForPopup = this.comments.slice(0, 5);
