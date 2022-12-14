@@ -17,3 +17,10 @@ export const getRandomComments = (commentsArray, commentsAmount) => {
 
   return comments;
 };
+
+export const getRandomFilms = (filmsArray, filmsAmount) => {
+  const getRandomFilm = () => getRandomArrayElement(filmsArray);
+  const films = Array.from({length: filmsAmount}, getRandomFilm);
+
+  return films;
+};

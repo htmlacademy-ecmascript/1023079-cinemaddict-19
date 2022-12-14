@@ -102,4 +102,4 @@ export const POPUP = {
   description: 'The film opens following a murder at a cabaret in Mexico City in 1936, and then presents the events leading up to it in flashback. The Great Flamarion (Erich von Stroheim) is an arrogant, friendless.',
 };
 
-export const getRandomFilm = () => getRandomArrayElement(mockFilms);
+
