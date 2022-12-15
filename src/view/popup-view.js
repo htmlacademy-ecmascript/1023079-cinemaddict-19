@@ -2,8 +2,12 @@ import {createElement} from '../render.js';
 import { createPopupTemplate } from './popup-view.template.js';
 
 export default class PopupView {
+  constructor (comments) {
+    this.comments = comments;
+  }
+
   getTemplate() {
-    return createPopupTemplate();
+    return createPopupTemplate(this.comments);
   }
 
   getElement() {
