@@ -8,33 +8,40 @@ import PopupView from '../view/popup-view.js';
 
 
 export default class FilmPresenter {
+  #container;
+  #header;
+  #body;
+  #filmsModel;
+  #commentModel;
+  #films;
+  #comments;
 
   constructor(mainContainer, headerContainer, bodyContainer, filmsModel, commentsModel) {
-    this.container = mainContainer;
-    this.header = headerContainer;
-    this.body = bodyContainer;
-    this.filmsModel = filmsModel;
-    this.commentModel = commentsModel;
+    this.#container = mainContainer;
+    this.#header = headerContainer;
+    this.#body = bodyContainer;
+    this.#filmsModel = filmsModel;
+    this.#commentModel = commentsModel;
   }
 
   init() {
     const filmContainer = new FilmContainerView();
-    this.films = this.filmsModel.getFilms();
-    this.comments = this.commentModel.getComments();
+    this.#films = this.#filmsModel.getFilms();
+    this.#comments = this.#commentModel.getComments();
 
-    render(new UserProfileView(), this.header);
-    render(new FilterView(), this.container);
-    render(filmContainer, this.container);
+    render(new UserProfileView(), this.#header);
+    render(new FilterView(), this.#container);
+    render(filmContainer, this.#container);
     const filmListContainer = filmContainer.getFilmListContainer();
 
-    this.films.forEach((film) => {
-      film.commentsCount = this.comments.filter((comment) => (comment.id === film.id)).length;
+    this.#films.forEach((film) => {
+      film.commentsCount = this.#comments.filter((comment) => (comment.id === film.id)).length;
       render(new FilmCardView(film), filmListContainer);
     });
 
-    render(new ShowMoreButtonView(), this.container);
+    render(new ShowMoreButtonView(), this.#container);
 
-    const commentsForPopup = this.comments.slice(0, 5);
-    render(new PopupView(commentsForPopup), this.body);
+    const commentsForPopup = this.#comments.slice(0, 5);
+    render(new PopupView(commentsForPopup), this.#body);
   }
 }
