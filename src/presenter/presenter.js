@@ -26,13 +26,13 @@ export default class FilmPresenter {
 
   init() {
     const filmContainer = new FilmContainerView();
-    this.#films = this.#filmsModel.getFilms();
-    this.#comments = this.#commentModel.getComments();
+    this.#films = this.#filmsModel.films;
+    this.#comments = this.#commentModel.comments;
 
     render(new UserProfileView(), this.#header);
     render(new FilterView(), this.#container);
     render(filmContainer, this.#container);
-    const filmListContainer = filmContainer.getFilmListContainer();
+    const filmListContainer = filmContainer.filmListContainer;
 
     this.#films.forEach((film) => {
       film.commentsCount = this.#comments.filter((comment) => (comment.id === film.id)).length;

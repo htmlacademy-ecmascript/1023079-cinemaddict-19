@@ -7,7 +7,7 @@ export default class CommentsModel {
 
   #comments = getRandomComments(COMMENTS, COMMENTS_AMOUNT);
 
-  getComments() {
+  get comments() {
     return this.#comments;
   }
 }

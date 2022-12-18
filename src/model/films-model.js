@@ -6,7 +6,7 @@ const FILM_COUNT = 5;
 export default class FilmsModel {
   #films = getRandomFilms(mockFilms, FILM_COUNT);
 
-  getFilms() {
+  get films() {
     return this.#films;
   }
 }
