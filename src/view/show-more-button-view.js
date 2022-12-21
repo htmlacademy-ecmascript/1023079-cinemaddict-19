@@ -2,19 +2,21 @@ import {createElement} from '../render.js';
 import { createShowMoreButtonTemplate } from './show-more-button.template.js';
 
 export default class ShowMoreButtonView {
-  getTemplate() {
+  #element;
+
+  get template() {
     return createShowMoreButtonTemplate();
   }
 
-  getElement() {
-    if(!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if(!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
