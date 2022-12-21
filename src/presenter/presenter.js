@@ -8,30 +8,38 @@ import PopupView from '../view/popup-view.js';
 
 
 export default class FilmPresenter {
-  #container;
-  #header;
-  #body;
+  #mainContainer;
+  #headerContainer;
+  #bodyContainer;
   #filmsModel;
   #commentModel;
   #films;
   #comments;
 
   constructor(mainContainer, headerContainer, bodyContainer, filmsModel, commentsModel) {
-    this.#container = mainContainer;
-    this.#header = headerContainer;
-    this.#body = bodyContainer;
+    this.#mainContainer = mainContainer;
+    this.#headerContainer = headerContainer;
+    this.#bodyContainer = bodyContainer;
     this.#filmsModel = filmsModel;
     this.#commentModel = commentsModel;
   }
+
+  #showPopup = (popup) => {
+    render(popup, this.#bodyContainer);
+  };
+
+  #hidePopup = (popup) => {
+    popup.element.remove();
+  };
 
   init() {
     const filmContainer = new FilmContainerView();
     this.#films = this.#filmsModel.films;
     this.#comments = this.#commentModel.comments;
 
-    render(new UserProfileView(), this.#header);
-    render(new FilterView(), this.#container);
-    render(filmContainer, this.#container);
+    render(new UserProfileView(), this.#headerContainer);
+    render(new FilterView(), this.#mainContainer);
+    render(filmContainer, this.#mainContainer);
     const filmListContainer = filmContainer.filmListContainer;
 
     this.#films.forEach((film) => {
@@ -43,40 +51,29 @@ export default class FilmPresenter {
       const filmCardLink = filmCard.element.querySelector('.film-card__link');
       const popupCloseButton = popup.element.querySelector('.film-details__close');
 
-      const showPopup = () => {
-        render(popup, this.#body);
-      };
-
-      const hidePopup = () => {
-        popup.element.remove();
-        //Почему наш встроенные метод removeElement() не работает?
-      };
-
       const escKeyDownHandler = (evt) => {
         if(evt.key === 'Escape' || evt.key === 'Esc') {
           evt.preventDefault();
-          hidePopup();
+          this.#hidePopup(popup);
           document.removeEventListener('keydown', escKeyDownHandler);
         }
       };
 
       filmCardLink.addEventListener('click', () => {
-        showPopup();
-        this.#body.classList.add('.hide-overflow');
+        this.#showPopup(popup);
+        this.#bodyContainer.classList.add('.hide-overflow');
         document.addEventListener('keydown', escKeyDownHandler);
       });
 
       popupCloseButton.addEventListener('click', () => {
-        hidePopup();
-        this.#body.classList.remove('.hide-overflow');
+        this.#hidePopup(popup);
+        this.#bodyContainer.classList.remove('.hide-overflow');
         document.removeEventListener('keydown', escKeyDownHandler);
       });
 
       render(filmCard, filmListContainer);
     });
 
-    render(new ShowMoreButtonView(), this.#container);
-
-
+    render(new ShowMoreButtonView(), this.#mainContainer);
   }
 }
