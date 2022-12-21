@@ -5,6 +5,7 @@ import ShowMoreButtonView from '../view/show-more-button-view.js';
 import FilmCardView from '../view/film-card-view.js';
 import UserProfileView from '../view/user-profile-view.js';
 import PopupView from '../view/popup-view.js';
+import LoadingPageView from '../view/loading-page-view';
 
 const FILMS_COUNT_PER_STEP = 5;
 
@@ -80,34 +81,37 @@ export default class FilmPresenter {
     this.#films = this.#filmsModel.films;
     this.#comments = this.#commentModel.comments;
     const showMoreButton = new ShowMoreButtonView();
+    const loadingPage = new LoadingPageView();
 
-    render(new UserProfileView(), this.#headerContainer);
     render(new FilterView(), this.#mainContainer);
     render(filmContainer, this.#mainContainer);
     const filmListContainer = filmContainer.filmListContainer;
 
     if (!this.#films.length) {
-      alert('no');
+      render(loadingPage, filmListContainer);
     }
-
-    this.#films.slice(this.#renderedFilmsCount, this.#renderedFilmsCount + FILMS_COUNT_PER_STEP).forEach((film) => {
-      this.#addPopupAndListenersToCard(film, filmListContainer);
-      this.#renderedFilmsCount++;
-    });
-
-    if(this.#renderedFilmsCount < this.#films.length) {
-      render(showMoreButton, this.#mainContainer);
-    }
-
-    showMoreButton.element.addEventListener('click', () => {
+    else
+    {
+      render(new UserProfileView(), this.#headerContainer);
       this.#films.slice(this.#renderedFilmsCount, this.#renderedFilmsCount + FILMS_COUNT_PER_STEP).forEach((film) => {
         this.#addPopupAndListenersToCard(film, filmListContainer);
         this.#renderedFilmsCount++;
-
-        if(this.#renderedFilmsCount === this.#films.length) {
-          showMoreButton.element.remove();
-        }
       });
-    });
+
+      if(this.#renderedFilmsCount < this.#films.length) {
+        render(showMoreButton, this.#mainContainer);
+      }
+
+      showMoreButton.element.addEventListener('click', () => {
+        this.#films.slice(this.#renderedFilmsCount, this.#renderedFilmsCount + FILMS_COUNT_PER_STEP).forEach((film) => {
+          this.#addPopupAndListenersToCard(film, filmListContainer);
+          this.#renderedFilmsCount++;
+
+          if(this.#renderedFilmsCount === this.#films.length) {
+            showMoreButton.element.remove();
+          }
+        });
+      });
+    }
   }
 }
