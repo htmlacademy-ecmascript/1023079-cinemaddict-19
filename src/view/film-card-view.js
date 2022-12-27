@@ -3,11 +3,16 @@ import { createNewFilmCardTemplate } from './film-card-view.template.js';
 
 
 export default class FilmCardView extends AbsractView{
-  #film;
 
-  constructor(film) {
+  #film;
+  #handleOnCardClick;
+
+  constructor(film, onCardClick) {
     super();
     this.#film = film;
+    this.#handleOnCardClick = onCardClick;
+
+    this.element.addEventListener('click', this.#handleOnCardClick);
   }
 
   get template() {
