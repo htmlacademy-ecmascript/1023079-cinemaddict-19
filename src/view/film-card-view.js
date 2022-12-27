@@ -1,28 +1,16 @@
-import { createElement} from '../render.js';
+import AbsractView from '../framework/view/abstract-view.js';
 import { createNewFilmCardTemplate } from './film-card-view.template.js';
 
 
-export default class FilmCardView {
-  #element;
+export default class FilmCardView extends AbsractView{
   #film;
 
   constructor(film) {
+    super();
     this.#film = film;
   }
 
   get template() {
     return createNewFilmCardTemplate(this.#film);
-  }
-
-  get element() {
-    if(!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

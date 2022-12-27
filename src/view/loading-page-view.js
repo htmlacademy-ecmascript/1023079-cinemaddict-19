@@ -1,22 +1,9 @@
-import {createElement} from '../render.js';
+import AbsractView from '../framework/view/abstract-view.js';
 import { createLoadingPageTemplate } from './loading-page-view.template.js';
 
-export default class LoadingPageView {
-  #element;
+export default class LoadingPageView extends AbsractView {
 
   get template() {
     return createLoadingPageTemplate();
-  }
-
-  get element() {
-    if(!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

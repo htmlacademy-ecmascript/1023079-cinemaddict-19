@@ -1,27 +1,16 @@
-import {createElement} from '../render.js';
+import AbsractView from '../framework/view/abstract-view.js';
 import { createPopupTemplate } from './popup-view.template.js';
 
-export default class PopupView {
+export default class PopupView extends AbsractView {
+
   #comments;
-  #element;
 
   constructor (comments) {
+    super();
     this.#comments = comments;
   }
 
   get template() {
     return createPopupTemplate(this.#comments);
-  }
-
-  get element() {
-    if(!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }
