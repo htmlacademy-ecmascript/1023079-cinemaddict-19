@@ -38,14 +38,6 @@ export default class FilmPresenter {
     this.#commentModel = commentsModel;
   }
 
-  #showPopup = (popup) => {
-    render(popup, this.#bodyContainer);
-  };
-
-  #hidePopup = (popup) => {
-    popup.element.remove();
-  };
-
   #addPopupAndListenersToCard = (film, container) => {
     const filmCard = new FilmCardView(film, this.#handleOnCardClick);
     film.commentsCount = this.#comments.filter(
