@@ -38,7 +38,7 @@ export default class FilmPresenter {
     this.#commentModel = commentsModel;
   }
 
-  #addPopupAndListenersToCard = (film, container) => {
+  #renderCard = (film, container) => {
     const filmCard = new FilmCardView(film, this.#handleOnCardClick);
     film.commentsCount = this.#comments.filter(
       (comment) => comment.id === film.id
@@ -71,7 +71,7 @@ export default class FilmPresenter {
 
   #handleShowMoreButtonClick = () => {
     this.#films.slice(this.#renderedFilmsCount, this.#renderedFilmsCount + FILMS_COUNT_PER_STEP).forEach((film) => {
-      this.#addPopupAndListenersToCard(film, this.#filmListContainer);
+      this.#renderCard(film, this.#filmListContainer);
       this.#renderedFilmsCount++;
 
       if(this.#renderedFilmsCount === this.#films.length) {
@@ -95,7 +95,7 @@ export default class FilmPresenter {
     {
       render(new UserProfileView(), this.#headerContainer);
       this.#films.slice(this.#renderedFilmsCount, this.#renderedFilmsCount + FILMS_COUNT_PER_STEP).forEach((film) => {
-        this.#addPopupAndListenersToCard(film, this.#filmListContainer);
+        this.#renderCard(film, this.#filmListContainer);
         this.#renderedFilmsCount++;
       });
 
