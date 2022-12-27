@@ -52,23 +52,6 @@ export default class FilmPresenter {
       (comment) => comment.id === film.id
     ).length;
 
-
-    // const filmCardLink = filmCard.element.querySelector('.film-card__link');
-    // const popupCloseButton = popup.element.querySelector('.film-details__close');
-
-
-    // filmCardLink.addEventListener('click', () => {
-    //   this.#showPopup(popup);
-    //   this.#bodyContainer.classList.add('.hide-overflow');
-    //   document.addEventListener('keydown', escKeyDownHandler);
-    // });
-
-    // popupCloseButton.addEventListener('click', () => {
-    //   this.#hidePopup(popup);
-    //   this.#bodyContainer.classList.remove('.hide-overflow');
-    //   document.removeEventListener('keydown', escKeyDownHandler);
-    // });
-
     render(filmCard, container);
   };
 
