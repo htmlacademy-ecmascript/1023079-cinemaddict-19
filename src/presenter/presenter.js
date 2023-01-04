@@ -19,8 +19,8 @@ export default class FilmPresenter {
   #comments;
   #showMoreButton;
   #popup;
-  #filmContainer = new FilmContainerView();
-  #filmListContainer = this.#filmContainer.filmListContainer;
+  #filmContainerView = new FilmContainerView();
+  #filmListContainer = this.#filmContainerView.filmListContainer;
 
   #renderedFilmsCount = 0;
 
@@ -86,7 +86,7 @@ export default class FilmPresenter {
     const loadingPage = new LoadingPageView();
 
     render(new FilterView(), this.#mainContainer);
-    render(this.#filmContainer, this.#mainContainer);
+    render(this.#filmContainerView, this.#mainContainer);
 
     if (!this.#films.length) {
       render(loadingPage, this.#filmListContainer);
