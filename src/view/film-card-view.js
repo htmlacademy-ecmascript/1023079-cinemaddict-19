@@ -1,28 +1,21 @@
-import { createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { createNewFilmCardTemplate } from './film-card-view.template.js';
 
 
-export default class FilmCardView {
-  #element;
-  #film;
+export default class FilmCardView extends AbstractView {
 
-  constructor(film) {
+  #film;
+  #handleOnCardClick;
+
+  constructor(film, onCardClick) {
+    super();
     this.#film = film;
+    this.#handleOnCardClick = onCardClick;
+
+    this.element.querySelector('.film-card__link').addEventListener('click', this.#handleOnCardClick);
   }
 
   get template() {
     return createNewFilmCardTemplate(this.#film);
-  }
-
-  get element() {
-    if(!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

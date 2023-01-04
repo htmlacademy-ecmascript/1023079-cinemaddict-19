@@ -1,22 +1,9 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { createUserProfileTemplate } from './user-profile-views.template.js';
 
-export default class UserProfileView {
-  #element;
+export default class UserProfileView extends AbstractView {
 
   get template() {
     return createUserProfileTemplate();
-  }
-
-  get element() {
-    if(!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }
