@@ -1,7 +1,7 @@
-import AbsractView from '../framework/view/abstract-view.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { createFilmsContainerTemplate } from './films-container-view.template.js';
 
-export default class FilmContainerView extends AbsractView {
+export default class FilmContainerView extends AbstractView {
   #listContainer;
 
   get template() {

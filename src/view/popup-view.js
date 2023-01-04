@@ -1,7 +1,7 @@
-import AbsractView from '../framework/view/abstract-view.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { createPopupTemplate } from './popup-view.template.js';
 
-export default class PopupView extends AbsractView {
+export default class PopupView extends AbstractView {
 
   #comments;
   #onCloseButtonClick;
