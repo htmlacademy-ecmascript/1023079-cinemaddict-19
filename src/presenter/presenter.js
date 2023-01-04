@@ -102,6 +102,7 @@ export default class FilmPresenter {
 
       if(this.#renderedFilmsCount === this.#films.length) {
         this.#showMoreButton.element.remove();
+        this.#showMoreButton.removeElement();
       }
     });
   };
