@@ -38,6 +38,32 @@ export default class FilmPresenter {
     this.#commentModel = commentsModel;
   }
 
+  init() {
+    this.#films = this.#filmsModel.films;
+    this.#comments = this.#commentModel.comments;
+    const loadingPage = new LoadingPageView();
+
+    render(new FilterView(), this.#mainContainer);
+    render(this.#filmContainerView, this.#mainContainer);
+
+    if (!this.#films.length) {
+      render(loadingPage, this.#filmListContainer);
+    }
+    else
+    {
+      render(new UserProfileView(), this.#headerContainer);
+      this.#films.slice(this.#renderedFilmsCount, this.#renderedFilmsCount + FILMS_COUNT_PER_STEP).forEach((film) => {
+        this.#renderCard(film, this.#filmListContainer);
+        this.#renderedFilmsCount++;
+      });
+
+      if(this.#renderedFilmsCount < this.#films.length) {
+        this.#showMoreButton = new ShowMoreButtonView(this.#handleShowMoreButtonClick);
+        render(this.#showMoreButton, this.#mainContainer);
+      }
+    }
+  }
+
   #renderCard = (film, container) => {
     const filmCard = new FilmCardView(film, this.#handleOnCardClick);
     film.commentsCount = this.#comments.filter(
@@ -79,30 +105,4 @@ export default class FilmPresenter {
       }
     });
   };
-
-  init() {
-    this.#films = this.#filmsModel.films;
-    this.#comments = this.#commentModel.comments;
-    const loadingPage = new LoadingPageView();
-
-    render(new FilterView(), this.#mainContainer);
-    render(this.#filmContainerView, this.#mainContainer);
-
-    if (!this.#films.length) {
-      render(loadingPage, this.#filmListContainer);
-    }
-    else
-    {
-      render(new UserProfileView(), this.#headerContainer);
-      this.#films.slice(this.#renderedFilmsCount, this.#renderedFilmsCount + FILMS_COUNT_PER_STEP).forEach((film) => {
-        this.#renderCard(film, this.#filmListContainer);
-        this.#renderedFilmsCount++;
-      });
-
-      if(this.#renderedFilmsCount < this.#films.length) {
-        this.#showMoreButton = new ShowMoreButtonView(this.#handleShowMoreButtonClick);
-        render(this.#showMoreButton, this.#mainContainer);
-      }
-    }
-  }
 }
