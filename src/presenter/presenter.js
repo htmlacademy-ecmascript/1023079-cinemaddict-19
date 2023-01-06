@@ -66,10 +66,10 @@ export default class FilmPresenter {
   }
 
   #renderCard = (film, container) => {
-    const filmCard = new FilmCardView(film, this.#onCardClick);
     film.commentsCount = this.#comments.filter(
       (comment) => comment.id === film.id
     ).length;
+    const filmCard = new FilmCardView(film, this.#onCardClick);
 
     render(filmCard, container);
   };
