@@ -1,4 +1,5 @@
 import { render } from '../framework/render.js';
+import { remove } from '../framework/render.js';
 import FilterView from '../view/sort-and-filter-view.js';
 import FilmContainerView from '../view/films-container-view.js';
 import ShowMoreButtonView from '../view/show-more-button-view.js';
@@ -101,8 +102,7 @@ export default class FilmPresenter {
       this.#renderedFilmsCount++;
 
       if(this.#renderedFilmsCount === this.#films.length) {
-        this.#showMoreButton.element.remove();
-        this.#showMoreButton.removeElement();
+        remove(this.#showMoreButton);
       }
     });
   };
