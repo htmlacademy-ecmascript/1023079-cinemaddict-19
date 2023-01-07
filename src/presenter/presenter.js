@@ -3,10 +3,9 @@ import { remove } from '../framework/render.js';
 import FilterView from '../view/sort-and-filter-view.js';
 import FilmContainerView from '../view/films-container-view.js';
 import ShowMoreButtonView from '../view/show-more-button-view.js';
-import FilmCardView from '../view/film-card-view.js';
 import UserProfileView from '../view/user-profile-view.js';
-import PopupView from '../view/popup-view.js';
 import LoadingPageView from '../view/loading-page-view';
+import FilmPresenter from './film-presenter.js';
 
 const FILMS_COUNT_PER_STEP = 5;
 
@@ -77,13 +76,9 @@ export default class MainPresenter {
     render(new FilterView(), this.#mainContainer);
   };
 
-  #renderCard = (film, container) => {
-    film.commentsCount = this.#comments.filter(
-      (comment) => comment.id === film.id
-    ).length;
-    const filmCard = new FilmCardView(film, this.#onCardClick);
-
-    render(filmCard, container);
+  #renderCard = (film) => {
+    const filmPresenter = new FilmPresenter(this.#filmListContainer, this.#bodyContainer, this.#commentModel.comments);
+    filmPresenter.init(film);
   };
 
   #renderCards = (from, to) => {
@@ -91,28 +86,6 @@ export default class MainPresenter {
       this.#renderCard(film, this.#filmListContainer);
       this.#renderedFilmsCount++;
     });
-  };
-
-  #escKeyDownHandler = (evt) => {
-    if (evt.key === 'Escape' || evt.key === 'Esc') {
-      evt.preventDefault();
-      this.#popup.element.remove();
-      document.removeEventListener('keydown', this.#escKeyDownHandler);
-    }
-  };
-
-  #onCloseButtonClick = () => {
-    this.#popup.element.remove();
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
-  };
-
-  #onCardClick = () => {
-    const commentsForPopup = this.#comments.slice(0, 5);
-    this.#popup = new PopupView(commentsForPopup, this.#onCloseButtonClick);
-
-    render(this.#popup, this.#bodyContainer);
-
-    document.addEventListener('keydown', this.#escKeyDownHandler);
   };
 
   #onShowMoreButtonClick = () => {
