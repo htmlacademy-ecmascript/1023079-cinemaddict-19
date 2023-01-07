@@ -42,21 +42,17 @@ export default class FilmPresenter {
   init() {
     this.#films = this.#filmsModel.films;
     this.#comments = this.#commentModel.comments;
-    const loadingPage = new LoadingPageView();
 
-    render(new FilterView(), this.#mainContainer);
-    render(this.#filmContainerView, this.#mainContainer);
+    this.#renderFilter();
+    this.#renderFilmContainer();
 
     if (!this.#films.length) {
-      render(loadingPage, this.#filmListContainer);
+      this.#renderLoading();
     }
     else
     {
-      render(new UserProfileView(), this.#headerContainer);
-      this.#films.slice(this.#renderedFilmsCount, this.#renderedFilmsCount + FILMS_COUNT_PER_STEP).forEach((film) => {
-        this.#renderCard(film, this.#filmListContainer);
-        this.#renderedFilmsCount++;
-      });
+      this.#renderUserProfile();
+      this.#renderCards(this.#renderedFilmsCount, this.#renderedFilmsCount + FILMS_COUNT_PER_STEP);
 
       if(this.#renderedFilmsCount < this.#films.length) {
         this.#showMoreButton = new ShowMoreButtonView(this.#onShowMoreButtonClick);
@@ -65,6 +61,22 @@ export default class FilmPresenter {
     }
   }
 
+  #renderFilmContainer = () => {
+    render(this.#filmContainerView, this.#mainContainer);
+  };
+
+  #renderLoading = () => {
+    render(new LoadingPageView(), this.#filmListContainer);
+  };
+
+  #renderUserProfile = () => {
+    render(new UserProfileView(), this.#headerContainer);
+  };
+
+  #renderFilter = () => {
+    render(new FilterView(), this.#mainContainer);
+  };
+
   #renderCard = (film, container) => {
     film.commentsCount = this.#comments.filter(
       (comment) => comment.id === film.id
@@ -72,6 +84,13 @@ export default class FilmPresenter {
     const filmCard = new FilmCardView(film, this.#onCardClick);
 
     render(filmCard, container);
+  };
+
+  #renderCards = (from, to) => {
+    this.#films.slice(from, to).forEach((film) => {
+      this.#renderCard(film, this.#filmListContainer);
+      this.#renderedFilmsCount++;
+    });
   };
 
   #escKeyDownHandler = (evt) => {
@@ -97,13 +116,10 @@ export default class FilmPresenter {
   };
 
   #onShowMoreButtonClick = () => {
-    this.#films.slice(this.#renderedFilmsCount, this.#renderedFilmsCount + FILMS_COUNT_PER_STEP).forEach((film) => {
-      this.#renderCard(film, this.#filmListContainer);
-      this.#renderedFilmsCount++;
+    this.#renderCards(this.#renderedFilmsCount, this.#renderedFilmsCount + FILMS_COUNT_PER_STEP);
 
-      if(this.#renderedFilmsCount === this.#films.length) {
-        remove(this.#showMoreButton);
-      }
-    });
+    if(this.#renderedFilmsCount === this.#films.length) {
+      remove(this.#showMoreButton);
+    }
   };
 }
