@@ -1,4 +1,4 @@
-import MainPresenter from './presenter/presenter.js';
+import MainPresenter from './presenter/main-presenter.js';
 import FilmsModel from './model/films-model.js';
 import CommentsModel from './model/comments-model.js';
 

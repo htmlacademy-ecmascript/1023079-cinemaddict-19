@@ -16,9 +16,7 @@ export default class MainPresenter {
   #filmsModel;
   #commentModel;
   #films;
-  #comments;
   #showMoreButton;
-  #popup;
   #filmContainerView = new FilmContainerView();
   #filmListContainer = this.#filmContainerView.filmListContainer;
 
@@ -40,7 +38,6 @@ export default class MainPresenter {
 
   init() {
     this.#films = this.#filmsModel.films;
-    this.#comments = this.#commentModel.comments;
 
     this.#renderFilter();
     this.#renderFilmContainer();
