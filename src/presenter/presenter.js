@@ -10,7 +10,7 @@ import LoadingPageView from '../view/loading-page-view';
 
 const FILMS_COUNT_PER_STEP = 5;
 
-export default class FilmPresenter {
+export default class MainPresenter {
   #mainContainer;
   #headerContainer;
   #bodyContainer;
