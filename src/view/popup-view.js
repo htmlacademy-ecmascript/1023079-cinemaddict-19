@@ -5,16 +5,26 @@ export default class PopupView extends AbstractView {
 
   #comments;
   #onCloseButtonClick;
+  #onAddToWatchlistClick;
+  #onAddToWatchedClick;
+  #onAddToFavoriteClick;
 
-  constructor (comments, onCloseButtonClick) {
+  constructor (comments, onCloseButtonClick, onAddToWatchlistClick, onAddToWatchedClick, onAddToFavoriteClick) {
     super();
     this.#comments = comments;
     this.#onCloseButtonClick = onCloseButtonClick;
+    this.#onAddToWatchlistClick = onAddToWatchlistClick;
+    this.#onAddToWatchedClick = onAddToWatchedClick;
+    this.#onAddToFavoriteClick = onAddToFavoriteClick;
 
     this.element.querySelector('.film-details__close-btn').addEventListener('click', this.#onCloseButtonClick);
+    this.element.querySelector('.film-details__control-button--watchlist').addEventListener('click', this.#onAddToWatchlistClick);
+    this.element.querySelector('.film-details__control-button--watched').addEventListener('click', this.#onAddToWatchedClick);
+    this.element.querySelector('.film-details__control-button--favorite').addEventListener('click', this.#onAddToFavoriteClick);
   }
 
   get template() {
     return createPopupTemplate(this.#comments);
   }
 }
+

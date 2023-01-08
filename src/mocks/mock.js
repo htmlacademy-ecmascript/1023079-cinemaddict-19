@@ -8,7 +8,10 @@ export const mockFilms = [
     date: '1980',
     duration: '1h 30m',
     genre: 'comedy',
-    id: 1
+    id: 1,
+    isAdded: false,
+    isWatched: false,
+    isFavorite: false
   },
 
   {
@@ -19,7 +22,10 @@ export const mockFilms = [
     date: '1980',
     duration: '1h 30m',
     genre: 'comedy',
-    id: 2
+    id: 2,
+    isAdded: false,
+    isWatched: false,
+    isFavorite: false
   },
 
   {
@@ -30,7 +36,10 @@ export const mockFilms = [
     date: '1980',
     duration: '1h 30m',
     genre: 'comedy',
-    id: 3
+    id: 3,
+    isAdded: false,
+    isWatched: false,
+    isFavorite: false
   },
 
   {
@@ -41,7 +50,10 @@ export const mockFilms = [
     date: '1980',
     duration: '1h 30m',
     genre: 'comedy',
-    id: 4
+    id: 4,
+    isAdded: false,
+    isWatched: false,
+    isFavorite: false
   },
 
   {
@@ -52,7 +64,10 @@ export const mockFilms = [
     date: '1980',
     duration: '1h 30m',
     genre: 'comedy',
-    id: 5
+    id: 5,
+    isAdded: false,
+    isWatched: false,
+    isFavorite: false
   }
 ];
 

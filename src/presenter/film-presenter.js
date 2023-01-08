@@ -22,18 +22,51 @@ export default class FilmPresenter {
     this.#film.commentsCount = this.#comments.filter(
       (comment) => comment.id === film.id
     ).length;
-    this.#filmCard = new FilmCardView(this.#film, this.#onCardClick);
+
+    this.#filmCard = new FilmCardView(this.#film, this.#onCardClick, this.#onAddToWatchlistClick, this.#onAddToWatchedClick, this.#onAddToFavoriteClick);
+    const commentsForPopup = this.#comments.slice(0, 5);
+    this.#popup = new PopupView(commentsForPopup, this.#onCloseButtonClick, this.#onAddToWatchlistClick, this.#onAddToWatchedClick, this.#onAddToFavoriteClick);
 
     render(this.#filmCard, this.#filmListContainer);
   }
 
   #onCardClick = () => {
-    const commentsForPopup = this.#comments.slice(0, 5);
-    this.#popup = new PopupView(commentsForPopup, this.#onCloseButtonClick);
-
     render(this.#popup, this.#bodyContainer);
 
     document.addEventListener('keydown', this.#escKeyDownHandler);
+  };
+
+  #onAddToWatchlistClick = () => {
+    if(this.#film.isAdded === false) {
+      this.#film.isAdded = true;
+    } else {
+      this.#film.isAdded = false;
+    }
+
+    this.#filmCard.element.querySelector('.film-card__controls-item--add-to-watchlist').classList.toggle('film-card__controls-item--active');
+    this.#popup.element.querySelector('.film-details__control-button--watchlist').classList.toggle('film-details__control-button--active');
+  };
+
+  #onAddToWatchedClick = () => {
+    if(this.#film.isWatched === false) {
+      this.#film.isWatched = true;
+    } else {
+      this.#film.isWatched = false;
+    }
+
+    this.#filmCard.element.querySelector('.film-card__controls-item--mark-as-watched').classList.toggle('film-card__controls-item--active');
+    this.#popup.element.querySelector('.film-details__control-button--watched').classList.toggle('film-details__control-button--active');
+  };
+
+  #onAddToFavoriteClick = () => {
+    if(this.#film.isFavorite === false) {
+      this.#film.isFavorite = true;
+    } else {
+      this.#film.isFavorite = false;
+    }
+
+    this.#filmCard.element.querySelector('.film-card__controls-item--favorite').classList.toggle('film-card__controls-item--active');
+    this.#popup.element.querySelector('.film-details__control-button--favorite').classList.toggle('film-details__control-button--active');
   };
 
   #onCloseButtonClick = () => {
