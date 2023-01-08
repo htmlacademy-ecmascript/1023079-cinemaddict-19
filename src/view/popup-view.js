@@ -9,9 +9,9 @@ export default class PopupView extends AbstractView {
   constructor (comments, onCloseButtonClick) {
     super();
     this.#comments = comments;
-    this.handleCloseButtonClick = onCloseButtonClick;
+    this.#onCloseButtonClick = onCloseButtonClick;
 
-    this.element.querySelector('.film-details__close-btn').addEventListener('click', this.handleCloseButtonClick);
+    this.element.querySelector('.film-details__close-btn').addEventListener('click', this.#onCloseButtonClick);
   }
 
   get template() {
