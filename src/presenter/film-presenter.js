@@ -1,4 +1,4 @@
-import { render } from '../framework/render.js';
+import { remove, render } from '../framework/render.js';
 import FilmCardView from '../view/film-card-view.js';
 import PopupView from '../view/popup-view.js';
 
@@ -8,7 +8,7 @@ export default class FilmPresenter {
   #bodyContainer;
   #filmCard;
   #film;
-  #popup;
+  #popup = null;
   #comments;
 
   constructor(filmListContainer, bodyContainer, comments) {
@@ -24,6 +24,7 @@ export default class FilmPresenter {
     ).length;
 
     this.#filmCard = new FilmCardView(this.#film, this.#onCardClick, this.#onAddToWatchlistClick, this.#onAddToWatchedClick, this.#onAddToFavoriteClick);
+
     const commentsForPopup = this.#comments.slice(0, 5);
     this.#popup = new PopupView(commentsForPopup, this.#onCloseButtonClick, this.#onAddToWatchlistClick, this.#onAddToWatchedClick, this.#onAddToFavoriteClick);
 
@@ -31,6 +32,10 @@ export default class FilmPresenter {
   }
 
   #onCardClick = () => {
+    if(this.#bodyContainer.contains(this.#popup.element)) {
+      remove(this.#popup.element);
+    }
+
     render(this.#popup, this.#bodyContainer);
 
     document.addEventListener('keydown', this.#escKeyDownHandler);
