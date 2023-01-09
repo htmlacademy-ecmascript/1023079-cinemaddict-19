@@ -26,7 +26,7 @@ export default class FilmPresenter {
     this.#filmCard = new FilmCardView(this.#film, this.#onCardClick, this.#onAddToWatchlistClick, this.#onAddToWatchedClick, this.#onAddToFavoriteClick);
 
     const commentsForPopup = this.#comments.slice(0, 5);
-    this.#popup = new PopupView(commentsForPopup, this.#onCloseButtonClick, this.#onAddToWatchlistClick, this.#onAddToWatchedClick, this.#onAddToFavoriteClick);
+    this.#popup = new PopupView(commentsForPopup, this.#film, this.#onCloseButtonClick, this.#onAddToWatchlistClick, this.#onAddToWatchedClick, this.#onAddToFavoriteClick);
 
     render(this.#filmCard, this.#filmListContainer);
   }
@@ -37,6 +37,7 @@ export default class FilmPresenter {
     }
 
     render(this.#popup, this.#bodyContainer);
+    console.log(this.#film.poster);
 
     document.addEventListener('keydown', this.#escKeyDownHandler);
   };

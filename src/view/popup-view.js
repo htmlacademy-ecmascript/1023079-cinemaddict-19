@@ -4,14 +4,16 @@ import { createPopupTemplate } from './popup-view.template.js';
 export default class PopupView extends AbstractView {
 
   #comments;
+  #film;
   #onCloseButtonClick;
   #onAddToWatchlistClick;
   #onAddToWatchedClick;
   #onAddToFavoriteClick;
 
-  constructor (comments, onCloseButtonClick, onAddToWatchlistClick, onAddToWatchedClick, onAddToFavoriteClick) {
+  constructor (comments, film, onCloseButtonClick, onAddToWatchlistClick, onAddToWatchedClick, onAddToFavoriteClick) {
     super();
     this.#comments = comments;
+    this.#film = film;
     this.#onCloseButtonClick = onCloseButtonClick;
     this.#onAddToWatchlistClick = onAddToWatchlistClick;
     this.#onAddToWatchedClick = onAddToWatchedClick;
@@ -24,7 +26,7 @@ export default class PopupView extends AbstractView {
   }
 
   get template() {
-    return createPopupTemplate(this.#comments);
+    return createPopupTemplate(this.#comments, this.#film);
   }
 }
 
