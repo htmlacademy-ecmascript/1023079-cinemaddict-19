@@ -32,7 +32,7 @@ export default class FilmPresenter {
   }
 
   #onCardClick = () => {
-    if(this.#bodyContainer.contains(this.#popup.element)) {
+    if (this.#bodyContainer.contains(this.#popup.element)) {
       remove(this.#popup.element);
     }
 
@@ -42,10 +42,10 @@ export default class FilmPresenter {
   };
 
   #onAddToWatchlistClick = () => {
-    if(this.#film.isAdded === false) {
-      this.#film.isAdded = true;
+    if (!this.#film.isAdded) {
+      this.#film.isAdded = !this.#film.isAdded;
     } else {
-      this.#film.isAdded = false;
+      this.#film.isAdded = !this.#film.isAdded;
     }
 
     this.#filmCard.element.querySelector('.film-card__controls-item--add-to-watchlist').classList.toggle('film-card__controls-item--active');
@@ -53,10 +53,10 @@ export default class FilmPresenter {
   };
 
   #onAddToWatchedClick = () => {
-    if(this.#film.isWatched === false) {
-      this.#film.isWatched = true;
+    if (!this.#film.isWatched) {
+      this.#film.isWatched = !this.#film.isWatched;
     } else {
-      this.#film.isWatched = false;
+      this.#film.isWatched = !this.#film.isWatched;
     }
 
     this.#filmCard.element.querySelector('.film-card__controls-item--mark-as-watched').classList.toggle('film-card__controls-item--active');
@@ -64,10 +64,10 @@ export default class FilmPresenter {
   };
 
   #onAddToFavoriteClick = () => {
-    if(this.#film.isFavorite === false) {
-      this.#film.isFavorite = true;
+    if (!this.#film.isFavorite) {
+      this.#film.isFavorite = !this.#film.isFavorite;
     } else {
-      this.#film.isFavorite = false;
+      this.#film.isFavorite = !this.#film.isFavorite;
     }
 
     this.#filmCard.element.querySelector('.film-card__controls-item--favorite').classList.toggle('film-card__controls-item--active');

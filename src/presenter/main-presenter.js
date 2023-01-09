@@ -44,13 +44,11 @@ export default class MainPresenter {
 
     if (!this.#films.length) {
       this.#renderLoading();
-    }
-    else
-    {
+    } else {
       this.#renderUserProfile();
       this.#renderCards(this.#renderedFilmsCount, this.#renderedFilmsCount + FILMS_COUNT_PER_STEP);
 
-      if(this.#renderedFilmsCount < this.#films.length) {
+      if (this.#renderedFilmsCount < this.#films.length) {
         this.#showMoreButton = new ShowMoreButtonView(this.#onShowMoreButtonClick);
         render(this.#showMoreButton, this.#mainContainer);
       }
@@ -88,7 +86,7 @@ export default class MainPresenter {
   #onShowMoreButtonClick = () => {
     this.#renderCards(this.#renderedFilmsCount, this.#renderedFilmsCount + FILMS_COUNT_PER_STEP);
 
-    if(this.#renderedFilmsCount === this.#films.length) {
+    if (this.#renderedFilmsCount === this.#films.length) {
       remove(this.#showMoreButton);
     }
   };

@@ -12,4 +12,3 @@ const commentsModel = new CommentsModel();
 const mainPresenter = new MainPresenter(mainContainer, header, body, filmsModel, commentsModel);
 
 mainPresenter.init();
-
