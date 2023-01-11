@@ -37,39 +37,26 @@ export default class FilmPresenter {
     }
 
     render(this.#popup, this.#bodyContainer);
-    console.log(this.#film.poster);
 
     document.addEventListener('keydown', this.#escKeyDownHandler);
   };
 
   #onAddToWatchlistClick = () => {
-    if (!this.#film.isAdded) {
-      this.#film.isAdded = !this.#film.isAdded;
-    } else {
-      this.#film.isAdded = !this.#film.isAdded;
-    }
+    this.#film.isAdded = !this.#film.isAdded;
 
     this.#filmCard.element.querySelector('.film-card__controls-item--add-to-watchlist').classList.toggle('film-card__controls-item--active');
     this.#popup.element.querySelector('.film-details__control-button--watchlist').classList.toggle('film-details__control-button--active');
   };
 
   #onAddToWatchedClick = () => {
-    if (!this.#film.isWatched) {
-      this.#film.isWatched = !this.#film.isWatched;
-    } else {
-      this.#film.isWatched = !this.#film.isWatched;
-    }
+    this.#film.isAdded = !this.#film.isAdded;
 
     this.#filmCard.element.querySelector('.film-card__controls-item--mark-as-watched').classList.toggle('film-card__controls-item--active');
     this.#popup.element.querySelector('.film-details__control-button--watched').classList.toggle('film-details__control-button--active');
   };
 
   #onAddToFavoriteClick = () => {
-    if (!this.#film.isFavorite) {
-      this.#film.isFavorite = !this.#film.isFavorite;
-    } else {
-      this.#film.isFavorite = !this.#film.isFavorite;
-    }
+    this.#film.isAdded = !this.#film.isAdded;
 
     this.#filmCard.element.querySelector('.film-card__controls-item--favorite').classList.toggle('film-card__controls-item--active');
     this.#popup.element.querySelector('.film-details__control-button--favorite').classList.toggle('film-details__control-button--active');
