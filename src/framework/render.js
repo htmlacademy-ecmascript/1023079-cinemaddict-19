@@ -8,6 +8,13 @@ const RenderPosition = {
   AFTEREND: 'afterend',
 };
 
+/** @enum {string} Перечисление возможных типов сортировки карточек фильмов*/
+export const SortType = {
+  DEFAULT: 'default',
+  DATE: 'date',
+  RATING: 'rating',
+};
+
 /**
  * Функция для создания элемента на основе разметки
  * @param {string} template Разметка в виде строки
