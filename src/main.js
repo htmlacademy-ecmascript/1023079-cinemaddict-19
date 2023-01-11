@@ -1,4 +1,4 @@
-import FilmPresenter from './presenter/presenter.js';
+import MainPresenter from './presenter/main-presenter.js';
 import FilmsModel from './model/films-model.js';
 import CommentsModel from './model/comments-model.js';
 
@@ -9,7 +9,6 @@ const body = document.querySelector('body');
 const filmsModel = new FilmsModel();
 const commentsModel = new CommentsModel();
 
-const presenter = new FilmPresenter(mainContainer, header, body, filmsModel, commentsModel);
+const mainPresenter = new MainPresenter(mainContainer, header, body, filmsModel, commentsModel);
 
-presenter.init();
-
+mainPresenter.init();

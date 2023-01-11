@@ -5,14 +5,23 @@ import { createNewFilmCardTemplate } from './film-card-view.template.js';
 export default class FilmCardView extends AbstractView {
 
   #film;
-  #handleOnCardClick;
+  #handleCardClick;
+  #onAddToWatchlistClick;
+  #onAddToWatchedClick;
+  #onAddToFavoriteClick;
 
-  constructor(film, onCardClick) {
+  constructor(film, onCardClick, onAddToWatchlistClick, onAddToWatchedClick, onAddToFavoriteClick) {
     super();
     this.#film = film;
-    this.#handleOnCardClick = onCardClick;
+    this.#handleCardClick = onCardClick;
+    this.#onAddToWatchlistClick = onAddToWatchlistClick;
+    this.#onAddToWatchedClick = onAddToWatchedClick;
+    this.#onAddToFavoriteClick = onAddToFavoriteClick;
 
-    this.element.querySelector('.film-card__link').addEventListener('click', this.#handleOnCardClick);
+    this.element.querySelector('.film-card__link').addEventListener('click', this.#handleCardClick);
+    this.element.querySelector('.film-card__controls-item--add-to-watchlist').addEventListener('click', this.#onAddToWatchlistClick);
+    this.element.querySelector('.film-card__controls-item--mark-as-watched').addEventListener('click', this.#onAddToWatchedClick);
+    this.element.querySelector('.film-card__controls-item--favorite').addEventListener('click', this.#onAddToFavoriteClick);
   }
 
   get template() {
