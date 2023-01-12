@@ -31,6 +31,10 @@ export default class FilmPresenter {
     render(this.#filmCard, this.#filmListContainer);
   }
 
+  destroy = () => {
+    remove(this.#filmCard);
+  };
+
   #onCardClick = () => {
     if (this.#bodyContainer.contains(this.#popup.element)) {
       remove(this.#popup.element);

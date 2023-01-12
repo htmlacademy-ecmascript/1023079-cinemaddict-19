@@ -24,3 +24,4 @@ export const getRandomFilms = (filmsArray, filmsAmount) => {
 
   return films;
 };
+
