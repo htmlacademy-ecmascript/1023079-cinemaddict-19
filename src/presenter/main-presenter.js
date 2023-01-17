@@ -78,7 +78,7 @@ export default class MainPresenter {
   };
 
   #renderCard = (film) => {
-    const filmPresenter = new FilmPresenter(this.#filmListContainer, this.#bodyContainer, this.#commentModel.comments);
+    const filmPresenter = new FilmPresenter(this.#filmListContainer, this.#bodyContainer, this.#commentModel.comments, this.#removePopup);
     filmPresenter.init(film);
 
     this.#filmPresenters.push(filmPresenter);
@@ -100,6 +100,10 @@ export default class MainPresenter {
     this.#filmPresenters.forEach((filmPresenter) => filmPresenter.destroy());
   };
 
+  #removePopup = () => {
+    this.#filmPresenters.forEach((filmPresenter) => filmPresenter.removePopup());
+  };
+
   #onShowMoreButtonClick = () => {
     this.#renderCards(this.#renderedFilmsCount, this.#renderedFilmsCount + FILMS_COUNT_PER_STEP);
 
@@ -109,7 +113,6 @@ export default class MainPresenter {
   };
 
   #onSortByDateClick = () => {
-
     if (this.#currentSortType === SortType.DATE) {
       return;
     }
@@ -128,7 +131,6 @@ export default class MainPresenter {
   };
 
   #onSortByRatingClick = () => {
-
     if (this.#currentSortType === SortType.RATING) {
       return;
     }

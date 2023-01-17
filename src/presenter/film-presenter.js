@@ -10,11 +10,13 @@ export default class FilmPresenter {
   #film;
   #popup = null;
   #comments;
+  #removePopup;
 
-  constructor(filmListContainer, bodyContainer, comments) {
+  constructor(filmListContainer, bodyContainer, comments, removePopup) {
     this.#filmListContainer = filmListContainer;
     this.#bodyContainer = bodyContainer;
     this.#comments = comments;
+    this.#removePopup = removePopup;
   }
 
   init(film) {
@@ -35,11 +37,12 @@ export default class FilmPresenter {
     remove(this.#filmCard);
   };
 
-  #onCardClick = () => {
-    if (this.#bodyContainer.contains(this.#popup.element)) {
-      remove(this.#popup.element);
-    }
+  removePopup = () => {
+    remove(this.#popup);
+  };
 
+  #onCardClick = () => {
+    this.#removePopup();
     render(this.#popup, this.#bodyContainer);
 
     document.addEventListener('keydown', this.#escKeyDownHandler);
