@@ -8,19 +8,21 @@ export default class FilmPresenter {
   #bodyContainer;
   #filmCard;
   #film;
-  #popup = null;
+  #popup;
   #comments;
-  #removePopup;
+  #handlePopupOpen;
+  #handlePopupClose;
 
-  constructor(filmListContainer, bodyContainer, comments, removePopup) {
+  constructor(filmListContainer, bodyContainer, onPopupOpen, onPopupClose) {
     this.#filmListContainer = filmListContainer;
     this.#bodyContainer = bodyContainer;
-    this.#comments = comments;
-    this.#removePopup = removePopup;
+    this.#handlePopupOpen = onPopupOpen;
+    this.#handlePopupClose = onPopupClose;
   }
 
-  init(film) {
+  init(film, comments) {
     this.#film = film;
+    this.#comments = comments;
     this.#film.commentsCount = this.#comments.filter(
       (comment) => comment.id === film.id
     ).length;
@@ -37,13 +39,19 @@ export default class FilmPresenter {
     remove(this.#filmCard);
   };
 
-  removePopup = () => {
-    remove(this.#popup);
+  closePopup = () => {
+    this.#popup.element.remove();
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+    this.#handlePopupClose();
   };
 
   #onCardClick = () => {
-    this.#removePopup();
+    if (this.#bodyContainer.contains(this.#popup.element)) {
+      return;
+    }
+
     render(this.#popup, this.#bodyContainer);
+    this.#handlePopupOpen(this);
 
     document.addEventListener('keydown', this.#escKeyDownHandler);
   };
@@ -70,15 +78,13 @@ export default class FilmPresenter {
   };
 
   #onCloseButtonClick = () => {
-    this.#popup.element.remove();
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
+    this.closePopup();
   };
 
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
-      this.#popup.element.remove();
-      document.removeEventListener('keydown', this.#escKeyDownHandler);
+      this.closePopup();
     }
   };
 }
