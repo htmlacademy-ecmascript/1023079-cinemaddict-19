@@ -56,6 +56,12 @@ export default class PopupView extends AbstractStatefulView {
     return film;
   }
 
+  reset(film) {
+    this.updateElement(
+      PopupView.parseTaskToState(film),
+    );
+  }
+
   #emojiChangeHandler = (evt) => {
     this.updateElement({
       commentEmoji: evt.target.value
