@@ -46,7 +46,7 @@ const createAddCommentFormTemplate = (commentEmoji) => (`
     </div>
 `);
 
-export const createPopupTemplate = (comments, film) => (
+export const createPopupTemplate = (comments, state) => (
   `<section class="film-details">
   <div class="film-details__inner">
     <div class="film-details__top-container">
@@ -55,7 +55,7 @@ export const createPopupTemplate = (comments, film) => (
       </div>
       <div class="film-details__info-wrap">
         <div class="film-details__poster">
-          <img class="film-details__poster-img" src=${film.poster} alt="">
+          <img class="film-details__poster-img" src=${state.poster} alt="">
 
           <p class="film-details__age">${age}</p>
         </div>
@@ -63,12 +63,12 @@ export const createPopupTemplate = (comments, film) => (
         <div class="film-details__info">
           <div class="film-details__info-head">
             <div class="film-details__title-wrap">
-              <h3 class="film-details__title">${film.name}</h3>
+              <h3 class="film-details__title">${state.name}</h3>
               <p class="film-details__title-original">${titleOrigin}</p>
             </div>
 
             <div class="film-details__rating">
-              <p class="film-details__total-rating">${film.rating}</p>
+              <p class="film-details__total-rating">${state.rating}</p>
             </div>
           </div>
 
@@ -87,11 +87,11 @@ export const createPopupTemplate = (comments, film) => (
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${film.date}</td>
+              <td class="film-details__cell">${state.date}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Duration</td>
-              <td class="film-details__cell">${film.duration}</td>
+              <td class="film-details__cell">${state.duration}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Country</td>
@@ -100,13 +100,13 @@ export const createPopupTemplate = (comments, film) => (
             <tr class="film-details__row">
               <td class="film-details__term">Genres</td>
               <td class="film-details__cell">
-                <span class="film-details__genre">${film.genre}</span>
+                <span class="film-details__genre">${state.genre}</span>
                 </td>
             </tr>
           </table>
 
           <p class="film-details__film-description">
-          ${film.description}
+          ${state.description}
           </p>
         </div>
       </div>
@@ -127,7 +127,7 @@ export const createPopupTemplate = (comments, film) => (
         </ul>
 
         <form class="film-details__new-comment" action="" method="get">
-          ${createAddCommentFormTemplate(film.commentEmoji)}
+          ${createAddCommentFormTemplate(state.commentEmoji)}
         </form>
       </section>
     </div>
