@@ -30,7 +30,7 @@ export default class PopupView extends AbstractStatefulView {
   }
 
   get template() {
-    return createPopupTemplate(this.#comments, this.#film);
+    return createPopupTemplate(this.#comments, this._state);
   }
 
   _restoreHandlers() {
@@ -38,6 +38,7 @@ export default class PopupView extends AbstractStatefulView {
     this.element.querySelector('.film-details__control-button--watchlist').addEventListener('click', this.#onAddToWatchlistClick);
     this.element.querySelector('.film-details__control-button--watched').addEventListener('click', this.#onAddToWatchedClick);
     this.element.querySelector('.film-details__control-button--favorite').addEventListener('click', this.#onAddToFavoriteClick);
+    this.element.querySelector('.film-details__emoji-list').addEventListener('change', this.#emojiChangeHandler);
   }
 
   static parseFilmToState(film) {
@@ -54,5 +55,11 @@ export default class PopupView extends AbstractStatefulView {
 
     return film;
   }
+
+  #emojiChangeHandler = (evt) => {
+    this.updateElement({
+      commentEmoji: evt.target.value
+    });
+  };
 }
 
