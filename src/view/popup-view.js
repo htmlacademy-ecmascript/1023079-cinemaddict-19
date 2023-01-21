@@ -1,4 +1,4 @@
-import AbstractStatefulView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import { createPopupTemplate } from './popup-view.template.js';
 import { COMMENTS_EMOTIONS } from '../consts.js';
 
@@ -7,7 +7,6 @@ const DEFAULT_COMMENT_EMOJI = COMMENTS_EMOTIONS[0];
 export default class PopupView extends AbstractStatefulView {
 
   #comments;
-  #film;
   #onCloseButtonClick;
   #onAddToWatchlistClick;
   #onAddToWatchedClick;
@@ -19,7 +18,6 @@ export default class PopupView extends AbstractStatefulView {
     this._setState(PopupView.parseFilmToState(film));
 
     this.#comments = comments;
-    this.#film = film;
     this.#onCloseButtonClick = onCloseButtonClick;
     this.#onAddToWatchlistClick = onAddToWatchlistClick;
     this.#onAddToWatchedClick = onAddToWatchedClick;
@@ -44,13 +42,15 @@ export default class PopupView extends AbstractStatefulView {
   static parseFilmToState(film) {
     return {
       ...film,
-      commentEmoji: DEFAULT_COMMENT_EMOJI
+      commentEmoji: DEFAULT_COMMENT_EMOJI,
+      scrollPosition: null
     };
   }
 
   static parseStateToFilm(state) {
     const film = {...state};
 
+    delete film.scrollPosition;
     delete film.commentEmoji;
 
     return film;
@@ -64,8 +64,10 @@ export default class PopupView extends AbstractStatefulView {
 
   #emojiChangeHandler = (evt) => {
     this.updateElement({
-      commentEmoji: evt.target.value
+      commentEmoji: evt.target.value,
+      scrollPosition: this.element.scrollTop
     });
+    this.element.scrollTo(0, this._state.scrollPosition);
   };
 }
 
