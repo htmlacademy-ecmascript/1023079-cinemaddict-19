@@ -22,7 +22,6 @@ export default class PopupView extends AbstractStatefulView {
     this.#onAddToWatchlistClick = onAddToWatchlistClick;
     this.#onAddToWatchedClick = onAddToWatchedClick;
     this.#onAddToFavoriteClick = onAddToFavoriteClick;
-    this.defaultCommentEmoji = DEFAULT_COMMENT_EMOJI;
 
     this._restoreHandlers();
   }
@@ -58,7 +57,7 @@ export default class PopupView extends AbstractStatefulView {
 
   reset(film) {
     this.updateElement(
-      PopupView.parseTaskToState(film),
+      PopupView.parseFilmToState(film),
     );
   }
 
