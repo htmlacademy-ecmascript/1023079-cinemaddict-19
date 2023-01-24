@@ -1,4 +1,5 @@
 import { POPUP } from '../mocks/mock';
+import { COMMENTS_EMOTIONS } from '../consts';
 
 const {
   titleOrigin,
@@ -26,8 +27,26 @@ const createCommentsTemplateForPopup = (comments) => comments.map((comment) =>
  `)
   .join('');
 
+const createAddCommentFormTemplate = (commentEmoji) => (`
+    <div class="film-details__add-emoji-label">
+    <img src="./images/emoji/${commentEmoji}.png" width="30" height="30" alt="emoji">
+    </div>
+    <label class="film-details__comment-label">
+      <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here"
+        name="comment"></textarea>
+    </label>
+    <div class="film-details__emoji-list">
+      ${COMMENTS_EMOTIONS.map((emotion) => `
+        <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${emotion}"
+          value="${emotion}" ${emotion === commentEmoji ? 'checked' : ''}>
+        <label class="film-details__emoji-label" for="emoji-${emotion}">
+          <img src="./images/emoji/${emotion}.png" width="30" height="30" alt="emoji">
+        </label>
+      `).join('')}
+    </div>
+`);
 
-export const createPopupTemplate = (comments, film) => (
+export const createPopupTemplate = (comments, state) => (
   `<section class="film-details">
   <div class="film-details__inner">
     <div class="film-details__top-container">
@@ -36,7 +55,7 @@ export const createPopupTemplate = (comments, film) => (
       </div>
       <div class="film-details__info-wrap">
         <div class="film-details__poster">
-          <img class="film-details__poster-img" src=${film.poster} alt="">
+          <img class="film-details__poster-img" src=${state.poster} alt="">
 
           <p class="film-details__age">${age}</p>
         </div>
@@ -44,12 +63,12 @@ export const createPopupTemplate = (comments, film) => (
         <div class="film-details__info">
           <div class="film-details__info-head">
             <div class="film-details__title-wrap">
-              <h3 class="film-details__title">${film.name}</h3>
+              <h3 class="film-details__title">${state.name}</h3>
               <p class="film-details__title-original">${titleOrigin}</p>
             </div>
 
             <div class="film-details__rating">
-              <p class="film-details__total-rating">${film.rating}</p>
+              <p class="film-details__total-rating">${state.rating}</p>
             </div>
           </div>
 
@@ -68,11 +87,11 @@ export const createPopupTemplate = (comments, film) => (
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${film.date}</td>
+              <td class="film-details__cell">${state.date}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Duration</td>
-              <td class="film-details__cell">${film.duration}</td>
+              <td class="film-details__cell">${state.duration}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Country</td>
@@ -81,13 +100,13 @@ export const createPopupTemplate = (comments, film) => (
             <tr class="film-details__row">
               <td class="film-details__term">Genres</td>
               <td class="film-details__cell">
-                <span class="film-details__genre">${film.genre}</span>
+                <span class="film-details__genre">${state.genre}</span>
                 </td>
             </tr>
           </table>
 
           <p class="film-details__film-description">
-          ${film.description}
+          ${state.description}
           </p>
         </div>
       </div>
@@ -108,33 +127,7 @@ export const createPopupTemplate = (comments, film) => (
         </ul>
 
         <form class="film-details__new-comment" action="" method="get">
-          <div class="film-details__add-emoji-label"></div>
-
-          <label class="film-details__comment-label">
-            <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
-          </label>
-
-          <div class="film-details__emoji-list">
-            <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile">
-            <label class="film-details__emoji-label" for="emoji-smile">
-              <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji">
-            </label>
-
-            <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="sleeping">
-            <label class="film-details__emoji-label" for="emoji-sleeping">
-              <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji">
-            </label>
-
-            <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-puke" value="puke">
-            <label class="film-details__emoji-label" for="emoji-puke">
-              <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji">
-            </label>
-
-            <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="angry">
-            <label class="film-details__emoji-label" for="emoji-angry">
-              <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
-            </label>
-          </div>
+          ${createAddCommentFormTemplate(state.commentEmoji)}
         </form>
       </section>
     </div>
