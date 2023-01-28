@@ -1,6 +1,7 @@
 import { remove, render } from '../framework/render.js';
 import FilmCardView from '../view/film-card-view.js';
 import PopupView from '../view/popup-view.js';
+import {UserAction, UpdateType} from '../consts.js';
 
 
 export default class FilmPresenter {
@@ -12,12 +13,14 @@ export default class FilmPresenter {
   #comments;
   #handlePopupOpen;
   #handlePopupClose;
+  #handleDataChange;
 
-  constructor(filmListContainer, bodyContainer, onPopupOpen, onPopupClose) {
+  constructor(filmListContainer, bodyContainer, onPopupOpen, onPopupClose, onDataChange) {
     this.#filmListContainer = filmListContainer;
     this.#bodyContainer = bodyContainer;
     this.#handlePopupOpen = onPopupOpen;
     this.#handlePopupClose = onPopupClose;
+    this.#handleDataChange = onDataChange;
   }
 
   init(film, comments) {
@@ -57,21 +60,46 @@ export default class FilmPresenter {
   };
 
   #onAddToWatchlistClick = () => {
-    this.#film.isAdded = !this.#film.isAdded;
+    this.#handleDataChange(
+      UserAction.UPDATE_TASK,
+      UpdateType.MINOR,
+      {
+        ...this.#film,
+        isAdded: !this.#film.isAdded
+      },
+    );
 
     this.#filmCard.element.querySelector('.film-card__controls-item--add-to-watchlist').classList.toggle('film-card__controls-item--active');
     this.#popup.element.querySelector('.film-details__control-button--watchlist').classList.toggle('film-details__control-button--active');
   };
 
   #onAddToWatchedClick = () => {
-    this.#film.isAdded = !this.#film.isAdded;
+    this.#handleDataChange(
+      UserAction.UPDATE_TASK,
+      UpdateType.MINOR,
+      {
+        ...this.#film,
+        isWatched: !this.#film.isWatched
+      },
+    );
+
+    // this.#film.isWatched = !this.#film.isWatched;
 
     this.#filmCard.element.querySelector('.film-card__controls-item--mark-as-watched').classList.toggle('film-card__controls-item--active');
     this.#popup.element.querySelector('.film-details__control-button--watched').classList.toggle('film-details__control-button--active');
   };
 
   #onAddToFavoriteClick = () => {
-    this.#film.isAdded = !this.#film.isAdded;
+    this.#handleDataChange(
+      UserAction.UPDATE_TASK,
+      UpdateType.MINOR,
+      {
+        ...this.#film,
+        isFavorite: !this.#film.isFavorite
+      },
+    );
+
+    // this.#film.isFavorite = !this.#film.isFavorite;
 
     this.#filmCard.element.querySelector('.film-card__controls-item--favorite').classList.toggle('film-card__controls-item--active');
     this.#popup.element.querySelector('.film-details__control-button--favorite').classList.toggle('film-details__control-button--active');

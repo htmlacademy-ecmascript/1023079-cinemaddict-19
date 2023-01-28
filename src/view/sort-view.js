@@ -1,7 +1,7 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { createFilterTemplate } from './sort-and-filter.template.js';
+import { createSortTemplate } from './sort.template.js';
 
-export default class FilterView extends AbstractView {
+export default class SortView extends AbstractView {
 
   #onSortByDataClick;
   #onSortByRatingClick;
@@ -13,13 +13,11 @@ export default class FilterView extends AbstractView {
     this.#onSortByRatingClick = onSortByRatingClick;
     this.#onSortByDefaultClick = onSortByDefaultClick;
 
-    this.element.querySelector('.sort-type-date').addEventListener('click', this.#sortByDataHandler);
-    this.element.querySelector('.sort-type-rating').addEventListener('click', this.#sortByRatingHandler);
-    this.element.querySelector('.sort-type-default').addEventListener('click', this.#sortByDefaultHandler);
+    this._restoreHandlers();
   }
 
   get template() {
-    return createFilterTemplate();
+    return createSortTemplate();
   }
 
   #sortByDataHandler = () => {
@@ -44,5 +42,11 @@ export default class FilterView extends AbstractView {
     this.element.querySelector('.sort-type-date').classList.remove('sort__button--active');
     this.element.querySelector('.sort-type-default').classList.add('sort__button--active');
     this.element.querySelector('.sort-type-rating').classList.remove('sort__button--active');
+  };
+
+  _restoreHandlers = () => {
+    this.element.querySelector('.sort-type-date').addEventListener('click', this.#sortByDataHandler);
+    this.element.querySelector('.sort-type-rating').addEventListener('click', this.#sortByRatingHandler);
+    this.element.querySelector('.sort-type-default').addEventListener('click', this.#sortByDefaultHandler);
   };
 }

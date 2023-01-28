@@ -8,10 +8,15 @@ export default class ShowMoreButtonView extends AbstractView {
   constructor(onClickHandler) {
     super();
     this.#onClickHandler = onClickHandler;
-    this.element.addEventListener('click', this.#onClickHandler);
+
+    this._restoreHandlers();
   }
 
   get template() {
     return createShowMoreButtonTemplate();
   }
+
+  _restoreHandlers = () => {
+    this.element.addEventListener('click', this.#onClickHandler);
+  };
 }
