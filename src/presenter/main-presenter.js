@@ -7,8 +7,9 @@ import UserProfileView from '../view/user-profile-view.js';
 import LoadingPageView from '../view/loading-page-view';
 import FilmPresenter from './film-presenter.js';
 import { SortType } from '../framework/render.js';
-import {UpdateType, UserAction} from '../consts.js';
-import FilterView from '../view/filter-view.js';
+import {UpdateType, UserAction, FilterType} from '../consts.js';
+import {filter} from '../utils/filter.js';
+
 
 const FILMS_COUNT_PER_STEP = 5;
 
@@ -25,7 +26,9 @@ export default class MainPresenter {
   #filmListContainer = this.#filmContainerView.filmListContainer;
   #filmPresenters = [];
   #currentSortType = SortType.DEFAULT;
-  #filterComponent;
+  #filterModel;
+  #filterType = FilterType.ALL;
+  #noFilmComponent;
 
   #renderedFilmsCount = 0;
   /** @type {FilmPresenter | null} */
@@ -36,15 +39,16 @@ export default class MainPresenter {
     headerContainer,
     bodyContainer,
     filmsModel,
-    commentsModel
+    commentsModel,
+    filterModel
   ) {
     this.#mainContainer = mainContainer;
     this.#headerContainer = headerContainer;
     this.#bodyContainer = bodyContainer;
     this.#filmsModel = filmsModel;
     this.#commentModel = commentsModel;
+    this.#filterModel = filterModel;
     this.#sortComponent = new SortView(this.#onSortByDateClick, this.#onSortByRatingClick, this.#onSortByDefaultClick);
-    this.#filterComponent = new FilterView();
     this.#showMoreButton = new ShowMoreButtonView(this.#onShowMoreButtonClick);
 
     this.#filmsModel.addObserver(this.#handleModelEvent);
@@ -85,13 +89,18 @@ export default class MainPresenter {
   };
 
   get films() {
+
+    this.#filterType = this.#filterModel.filter;
+    const films = this.#filmsModel.films;
+    const filteredFilms = filter[this.#filterType](films);
+
     switch (this.#currentSortType) {
       case SortType.DATE:
-        return [...this.#filmsModel.films].sort((a,b) => b.date - a.date);
+        return filteredFilms.sort((a,b) => b.date - a.date);
       case SortType.RATING:
-        return [...this.#filmsModel.films].sort((a,b) => b.rating - a.rating);
+        return filteredFilms.sort((a,b) => b.rating - a.rating);
       case SortType.DEFAULT:
-        return this.#filmsModel.films;
+        return films;
     }
 
     return this.#filmsModel.films;
@@ -99,7 +108,6 @@ export default class MainPresenter {
 
   #renderFilmContainer = () => {
     this.#renderUserProfile();
-    this.#renderFilter();
     this.#renderSort();
     render(this.#filmContainerView, this.#mainContainer);
 
@@ -134,7 +142,11 @@ export default class MainPresenter {
   }
 
   #renderLoading = () => {
-    render(new LoadingPageView(), this.#filmListContainer);
+    this.#noFilmComponent = new LoadingPageView({
+      filterType: this.#filterType
+    });
+
+    render(this.#noFilmComponent, this.#filmListContainer);
   };
 
   #renderUserProfile = () => {
@@ -144,10 +156,6 @@ export default class MainPresenter {
   #renderSort = () => {
     render(this.#sortComponent, this.#mainContainer);
     this.#sortComponent._restoreHandlers();
-  };
-
-  #renderFilter = () => {
-    render(this.#filterComponent, this.#mainContainer);
   };
 
   #renderCard = (film) => {

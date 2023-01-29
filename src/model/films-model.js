@@ -1,4 +1,4 @@
-import { getRandomFilms } from '../utils.js';
+import { getRandomFilms } from '../utils/utils.js';
 import { mockFilms } from '../mocks/mock.js';
 import Observable from '../framework/observable.js';
 

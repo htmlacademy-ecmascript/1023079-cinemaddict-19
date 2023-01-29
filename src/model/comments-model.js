@@ -1,5 +1,5 @@
 import { COMMENTS } from '../mocks/mock';
-import { getRandomComments } from '../utils';
+import { getRandomComments } from '../utils/utils';
 
 const COMMENTS_AMOUNT = 40;
 
