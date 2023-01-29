@@ -33,7 +33,7 @@ export default class FilmPresenter {
     this.#filmCard = new FilmCardView(this.#film, this.#onCardClick, this.#onAddToWatchlistClick, this.#onAddToWatchedClick, this.#onAddToFavoriteClick);
 
     const commentsForPopup = this.#comments.slice(0, 5);
-    this.#popup = new PopupView(commentsForPopup, this.#film, this.#onCloseButtonClick, this.#onAddToWatchlistClick, this.#onAddToWatchedClick, this.#onAddToFavoriteClick);
+    this.#popup = new PopupView(commentsForPopup, this.#film, this.#onCloseButtonClick, this.#onAddToWatchlistClick, this.#onAddToWatchedClick, this.#onAddToFavoriteClick, this.#handleDeleteClick, this.#handleAddComment);
 
     render(this.#filmCard, this.#filmListContainer);
   }
@@ -115,5 +115,21 @@ export default class FilmPresenter {
       this.#popup.reset(this.#film);
       this.closePopup();
     }
+  };
+
+  #handleDeleteClick = (id) => {
+    this.#handleDataChange(
+      UserAction.DELETE_COMMENT,
+      UpdateType.PATCH,
+      id
+    );
+  };
+
+  #handleAddComment = (data) => {
+    this.#handleDataChange(
+      UserAction.ADD_COMMENT,
+      UpdateType.PATCH,
+      data
+    );
   };
 }
