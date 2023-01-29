@@ -52,10 +52,34 @@ export default class MainPresenter {
     this.#showMoreButton = new ShowMoreButtonView(this.#onShowMoreButtonClick);
 
     this.#filmsModel.addObserver(this.#handleModelEvent);
+    this.#commentModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   init() {
     this.#renderFilmContainer();
+  }
+
+  get films() {
+
+    this.#filterType = this.#filterModel.filter;
+    const films = this.#filmsModel.films;
+    const filteredFilms = filter[this.#filterType](films);
+
+    switch (this.#currentSortType) {
+      case SortType.DATE:
+        return filteredFilms.sort((a,b) => b.date - a.date);
+      case SortType.RATING:
+        return filteredFilms.sort((a,b) => b.rating - a.rating);
+      case SortType.DEFAULT:
+        return films;
+    }
+
+    return this.#filmsModel.films;
+  }
+
+  get comments() {
+    return this.#commentModel.comments;
   }
 
   #handleViewAction = (actionType, updateType, update) => {
@@ -87,24 +111,6 @@ export default class MainPresenter {
         break;
     }
   };
-
-  get films() {
-
-    this.#filterType = this.#filterModel.filter;
-    const films = this.#filmsModel.films;
-    const filteredFilms = filter[this.#filterType](films);
-
-    switch (this.#currentSortType) {
-      case SortType.DATE:
-        return filteredFilms.sort((a,b) => b.date - a.date);
-      case SortType.RATING:
-        return filteredFilms.sort((a,b) => b.rating - a.rating);
-      case SortType.DEFAULT:
-        return films;
-    }
-
-    return this.#filmsModel.films;
-  }
 
   #renderFilmContainer = () => {
     this.#renderUserProfile();
@@ -160,7 +166,7 @@ export default class MainPresenter {
 
   #renderCard = (film) => {
     const filmPresenter = new FilmPresenter(this.#filmListContainer, this.#bodyContainer, this.#onPopupOpen, this.#onPopupClose, this.#handleViewAction);
-    filmPresenter.init(film, this.#commentModel.comments);
+    filmPresenter.init(film, this.comments);
 
     this.#filmPresenters.push(filmPresenter);
   };

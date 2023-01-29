@@ -6,9 +6,9 @@ export const COMMENTS_EMOTIONS = [
 ];
 
 export const UserAction = {
-  UPDATE_FILM: 'UPDATE_FILM',
-  ADD_FILM: 'ADD_FILM',
-  DELETE_FILM: 'DELETE_FILM',
+  UPDATE_COMMENT: 'UPDATE_FILM',
+  ADD_COMMENT: 'ADD_COMMENT',
+  DELETE_COMMENT: 'DELETE_COMMENT',
 };
 
 export const UpdateType = {

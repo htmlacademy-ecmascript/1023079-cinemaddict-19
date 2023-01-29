@@ -11,8 +11,10 @@ export default class PopupView extends AbstractStatefulView {
   #onAddToWatchlistClick;
   #onAddToWatchedClick;
   #onAddToFavoriteClick;
+  #onAddComment;
+  #onDeleteClick;
 
-  constructor (comments, film, onCloseButtonClick, onAddToWatchlistClick, onAddToWatchedClick, onAddToFavoriteClick) {
+  constructor (comments, film, onCloseButtonClick, onAddToWatchlistClick, onAddToWatchedClick, onAddToFavoriteClick, onDeleteClick, onAddComment) {
     super();
 
     this._setState(PopupView.parseFilmToState(film));
@@ -22,6 +24,8 @@ export default class PopupView extends AbstractStatefulView {
     this.#onAddToWatchlistClick = onAddToWatchlistClick;
     this.#onAddToWatchedClick = onAddToWatchedClick;
     this.#onAddToFavoriteClick = onAddToFavoriteClick;
+    this.#onDeleteClick = onDeleteClick;
+    this.#onAddComment = onAddComment;
 
     this._restoreHandlers();
   }
@@ -36,6 +40,7 @@ export default class PopupView extends AbstractStatefulView {
     this.element.querySelector('.film-details__control-button--watched').addEventListener('click', this.#onAddToWatchedClick);
     this.element.querySelector('.film-details__control-button--favorite').addEventListener('click', this.#onAddToFavoriteClick);
     this.element.querySelector('.film-details__emoji-list').addEventListener('change', this.#emojiChangeHandler);
+    this.element.querySelectorAll('.film-details__comment-delete').forEach((button) => button.addEventListener('click', this.#onDeleteClick));
   }
 
   static parseFilmToState(film) {

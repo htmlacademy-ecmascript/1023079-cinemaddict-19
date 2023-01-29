@@ -1,13 +1,32 @@
-import { COMMENTS } from '../mocks/mock';
-import { getRandomComments } from '../utils/utils';
+import Observable from '../framework/observable.js';
 
-const COMMENTS_AMOUNT = 40;
+export default class CommentsModel extends Observable{
+  #comments = null;
 
-export default class CommentsModel {
-
-  #comments = getRandomComments(COMMENTS, COMMENTS_AMOUNT);
+  constructor(comments) {
+    super();
+    this.#comments = comments;
+  }
 
   get comments() {
     return this.#comments;
+  }
+
+  addComment(updateType, update) {
+    this.#comments = [
+      update.comment,
+      ...this.#comments,
+    ];
+    this._notify(updateType, update.film);
+  }
+
+  deleteComment(updateType, update) {
+    const index = this.#comments.findIndex((comment) => comment.id === update.id);
+    if (index === -1) {
+      throw new Error('Can\'t delete unexisting comment');
+    }
+
+    this.#comments = this.#comments.filter((comment) => comment.id !== update.id);
+    this._notify(updateType, update.film);
   }
 }
