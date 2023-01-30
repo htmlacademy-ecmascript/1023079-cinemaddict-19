@@ -1,5 +1,6 @@
 import { POPUP } from '../mocks/mock';
 import { COMMENTS_EMOTIONS } from '../consts';
+// import he from 'he';
 
 const {
   titleOrigin,
@@ -27,9 +28,9 @@ const createCommentsTemplateForPopup = (comments) => comments.map((comment) =>
  `)
   .join('');
 
-const createAddCommentFormTemplate = (commentEmoji) => (`
+const createAddCommentFormTemplate = (state) => (`
     <div class="film-details__add-emoji-label">
-    <img src="./images/emoji/${commentEmoji}.png" width="30" height="30" alt="emoji">
+    <img src="./images/emoji/${state.emotion}.png" width="30" height="30" alt="emoji">
     </div>
     <label class="film-details__comment-label">
       <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here"
@@ -38,7 +39,7 @@ const createAddCommentFormTemplate = (commentEmoji) => (`
     <div class="film-details__emoji-list">
       ${COMMENTS_EMOTIONS.map((emotion) => `
         <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${emotion}"
-          value="${emotion}" ${emotion === commentEmoji ? 'checked' : ''}>
+          value="${emotion}" ${emotion === state.emotion ? 'checked' : ''}>
         <label class="film-details__emoji-label" for="emoji-${emotion}">
           <img src="./images/emoji/${emotion}.png" width="30" height="30" alt="emoji">
         </label>
@@ -46,8 +47,18 @@ const createAddCommentFormTemplate = (commentEmoji) => (`
     </div>
 `);
 
-export const createPopupTemplate = (comments, state) => (
-  `<section class="film-details">
+export const createPopupTemplate = (film, comments, state) => {
+
+  const watchlist = film.isAdded;
+  const alreadyWatched = film.isWatched;
+  const favorite = film.isFavorite;
+
+  const activeWatchlistClassName = watchlist ? 'film-details__control-button--active' : '';
+  const activeAsWatchedClassName = alreadyWatched ? 'film-details__control-button--active' : '';
+  const activeFavoriteClassName = favorite ? 'film-details__control-button--active' : '';
+
+  return (`
+  <section class="film-details">
   <div class="film-details__inner">
     <div class="film-details__top-container">
       <div class="film-details__close">
@@ -112,9 +123,9 @@ export const createPopupTemplate = (comments, state) => (
       </div>
 
       <section class="film-details__controls">
-        <button type="button" class="film-details__control-button film-details__control-button--watchlist" id="watchlist" name="watchlist">Add to watchlist</button>
-        <button type="button" class="film-details__control-button film-details__control-button--watched" id="watched" name="watched">Already watched</button>
-        <button type="button" class="film-details__control-button film-details__control-button--favorite" id="favorite" name="favorite">Add to favorites</button>
+        <button type="button" class="film-details__control-button film-details__control-button--watchlist ${activeWatchlistClassName}" id="watchlist" name="watchlist">Add to watchlist</button>
+        <button type="button" class="film-details__control-button film-details__control-button--watched ${activeAsWatchedClassName}" id="watched" name="watched">Already watched</button>
+        <button type="button" class="film-details__control-button film-details__control-button--favorite ${activeFavoriteClassName}" id="favorite" name="favorite">Add to favorites</button>
       </section>
     </div>
 
@@ -127,10 +138,11 @@ export const createPopupTemplate = (comments, state) => (
         </ul>
 
         <form class="film-details__new-comment" action="" method="get">
-          ${createAddCommentFormTemplate(state.commentEmoji)}
+          ${createAddCommentFormTemplate(state)}
         </form>
       </section>
     </div>
   </div>
-</section>`
-);
+</section>
+`);
+};

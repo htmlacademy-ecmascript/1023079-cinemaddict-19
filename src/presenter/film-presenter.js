@@ -1,121 +1,90 @@
-import { remove, render } from '../framework/render.js';
+import { remove, render, replace } from '../framework/render.js';
 import FilmCardView from '../view/film-card-view.js';
 import PopupView from '../view/popup-view.js';
 import {UserAction, UpdateType} from '../consts.js';
+import { isEscapePush } from '../utils/utils.js';
 
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  OPEN: 'OPEN',
+};
 
 export default class FilmPresenter {
   #filmListContainer;
-  #bodyContainer;
   #filmCard;
   #film;
   #popup;
-  #comments;
-  #handlePopupOpen;
-  #handlePopupClose;
   #handleDataChange;
+  #handleModeChange;
+  #currentFilterType;
+  #mode = Mode.DEFAULT;
 
-  constructor(filmListContainer, bodyContainer, onPopupOpen, onPopupClose, onDataChange) {
+  constructor(filmListContainer, onModeChange, onDataChange, currentFilterType) {
     this.#filmListContainer = filmListContainer;
-    this.#bodyContainer = bodyContainer;
-    this.#handlePopupOpen = onPopupOpen;
-    this.#handlePopupClose = onPopupClose;
     this.#handleDataChange = onDataChange;
+    this.#handleModeChange = onModeChange;
+    this.#currentFilterType = currentFilterType;
   }
 
   init(film, comments) {
     this.#film = film;
-    this.#comments = comments;
-    this.#film.commentsCount = this.#comments.filter(
-      (comment) => comment.id === film.id
-    ).length;
+    const prevFilmComponent = this.#filmCard;
+    const prevPopupComponent = this.#popup;
 
-    this.#filmCard = new FilmCardView(this.#film, this.#onCardClick, this.#onAddToWatchlistClick, this.#onAddToWatchedClick, this.#onAddToFavoriteClick);
+    this.#filmCard = new FilmCardView(this.#film, this.#openPopupClickHandler(this.#film, comments), this.#handleControlsClick, this.#currentFilterType);
 
-    const commentsForPopup = this.#comments.slice(0, 5);
-    this.#popup = new PopupView(commentsForPopup, this.#film, this.#onCloseButtonClick, this.#onAddToWatchlistClick, this.#onAddToWatchedClick, this.#onAddToFavoriteClick, this.#handleDeleteClick, this.#handleAddComment);
+    if (prevFilmComponent === null) {
+      render(this.#filmCard, this.#filmListContainer);
+    } else {
+      replace(this.#filmCard, prevFilmComponent);
+    }
 
-    render(this.#filmCard, this.#filmListContainer);
+    if (this.#mode === Mode.OPEN) {
+      this.#popup = new PopupView(comments, film, this.#closePopupClickHandler(film), this.#handleControlsClick, this.#handleDeleteClick, this.#handleAddComment);
+      replace(this.#popup, prevPopupComponent);
+    }
+
+    remove(prevFilmComponent);
+    remove(prevPopupComponent);
   }
 
-  destroy = () => {
+  destroy() {
     remove(this.#filmCard);
-  };
+    remove(this.#popup);
+  }
 
-  closePopup = () => {
-    this.#popup.element.remove();
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
-    this.#handlePopupClose();
-  };
-
-  #onCardClick = () => {
-    if (this.#bodyContainer.contains(this.#popup.element)) {
-      return;
+  reset() {
+    if (this.#mode !== Mode.DEFAULT) {
+      this.#closePopupClickHandler();
     }
+  }
 
-    render(this.#popup, this.#bodyContainer);
-    this.#handlePopupOpen(this);
+  #handleControlsClick = (updatedDetails, updateType = UpdateType.PATCH) => {
+    this.#handleDataChange(
+      UserAction.UPDATE_FILM,
+      updateType,
+      {...this.#film, userDetails: updatedDetails});
+  };
 
+  #openPopupClickHandler(film, comments) {
+    this.#popup = new PopupView({
+      film: film,
+      comments,
+      onCloseClick: () => this.#closePopupClickHandler(film),
+      onControlsClick: this.#handleControlsClick,
+      onDeleteClick: this.#handleDeleteClick,
+      onAddComment: this.#handleAddComment
+    });
+    this.#appendPopup();
+  }
+
+  #appendPopup() {
+    this.#handleModeChange();
+    document.body.appendChild(this.#popup.element);
+    document.body.classList.add('hide-overflow');
     document.addEventListener('keydown', this.#escKeyDownHandler);
-  };
-
-  #onAddToWatchlistClick = () => {
-    this.#handleDataChange(
-      UserAction.UPDATE_TASK,
-      UpdateType.MINOR,
-      {
-        ...this.#film,
-        isAdded: !this.#film.isAdded
-      },
-    );
-
-    this.#filmCard.element.querySelector('.film-card__controls-item--add-to-watchlist').classList.toggle('film-card__controls-item--active');
-    this.#popup.element.querySelector('.film-details__control-button--watchlist').classList.toggle('film-details__control-button--active');
-  };
-
-  #onAddToWatchedClick = () => {
-    this.#handleDataChange(
-      UserAction.UPDATE_TASK,
-      UpdateType.MINOR,
-      {
-        ...this.#film,
-        isWatched: !this.#film.isWatched
-      },
-    );
-
-    // this.#film.isWatched = !this.#film.isWatched;
-
-    this.#filmCard.element.querySelector('.film-card__controls-item--mark-as-watched').classList.toggle('film-card__controls-item--active');
-    this.#popup.element.querySelector('.film-details__control-button--watched').classList.toggle('film-details__control-button--active');
-  };
-
-  #onAddToFavoriteClick = () => {
-    this.#handleDataChange(
-      UserAction.UPDATE_TASK,
-      UpdateType.MINOR,
-      {
-        ...this.#film,
-        isFavorite: !this.#film.isFavorite
-      },
-    );
-
-    // this.#film.isFavorite = !this.#film.isFavorite;
-
-    this.#filmCard.element.querySelector('.film-card__controls-item--favorite').classList.toggle('film-card__controls-item--active');
-    this.#popup.element.querySelector('.film-details__control-button--favorite').classList.toggle('film-details__control-button--active');
-  };
-
-  #onCloseButtonClick = () => {
-    this.closePopup();
-  };
-
-  #escKeyDownHandler = (evt) => {
-    if (evt.key === 'Escape' || evt.key === 'Esc') {
-      evt.preventDefault();
-      this.#popup.reset(this.#film);
-      this.closePopup();
-    }
-  };
+    this.#mode = Mode.OPEN;
+  }
 
   #handleDeleteClick = (id) => {
     this.#handleDataChange(
@@ -125,11 +94,29 @@ export default class FilmPresenter {
     );
   };
 
+  #removePopup() {
+    document.body.removeChild(this.#popup.element);
+    document.body.classList.remove('hide-overflow');
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+    this.#mode = Mode.DEFAULT;
+  }
+
+  #closePopupClickHandler = () => {
+    this.#removePopup();
+  };
+
   #handleAddComment = (data) => {
     this.#handleDataChange(
       UserAction.ADD_COMMENT,
       UpdateType.PATCH,
       data
     );
+  };
+
+  #escKeyDownHandler = (evt) => {
+    if (isEscapePush(evt)) {
+      evt.preventDefault();
+      this.#closePopupClickHandler();
+    }
   };
 }

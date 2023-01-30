@@ -6,22 +6,13 @@ export const getRandomInt = (min, max) => {
 
 export const getRandomArrayElement = (items) => items[Math.floor(Math.random() * items.length)];
 
-export const getRandomComments = (commentsArray, commentsAmount) => {
-
-  const getRandomComment = () => getRandomArrayElement(commentsArray);
-  const comments = Array.from({length: commentsAmount}, getRandomComment);
-
-  comments.forEach((comment) => {
-    comment.id = getRandomInt(1, 5);
-  });
-
-  return comments;
-};
-
 export const getRandomFilms = (filmsArray, filmsAmount) => {
   const getRandomFilm = () => getRandomArrayElement(filmsArray);
   const films = Array.from({length: filmsAmount}, getRandomFilm);
 
   return films;
 };
+
+export const isEnterPush = (evt) => evt.key === 'Enter';
+export const isEscapePush = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 

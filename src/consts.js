@@ -1,3 +1,7 @@
+export const DATE_FORMAT = 'DD/MM/YYYY hh:mm';
+export const COMMENT_COUNT = 49;
+export const FILM_COUNT = 17;
+
 export const COMMENTS_EMOTIONS = [
   'smile',
   'sleeping',
@@ -23,3 +27,4 @@ export const FilterType = {
   HISTORY: 'history',
   FAVORITES: 'favorites'
 };
+

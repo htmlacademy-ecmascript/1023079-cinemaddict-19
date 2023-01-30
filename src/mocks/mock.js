@@ -1,3 +1,10 @@
+import dayjs from 'dayjs';
+import { COMMENTS_EMOTIONS } from '../consts.js';
+import { DATE_FORMAT } from '../consts.js';
+import { getRandomArrayElement } from '../utils/utils.js';
+import { COMMENT_COUNT } from '../consts.js';
+import { getRandomInt } from '../utils/utils.js';
+
 export const mockFilms = [
 
   {
@@ -71,33 +78,15 @@ export const mockFilms = [
   }
 ];
 
+const createComment = () => ({
+  id: getRandomInt(1,5),
+  author: 'some persone',
+  comment: 'some opinion',
+  commentDate: `${dayjs().format(DATE_FORMAT)}`,
+  emotion: getRandomArrayElement(COMMENTS_EMOTIONS),
+});
 
-export const COMMENTS = [
-  {
-    emoji: './images/emoji/smile.png',
-    text: 'Interesting setting and a good cast',
-    author: 'VKDKDPAD',
-    date: '2 days ago'
-  },
-  {
-    emoji: './images/emoji/sleeping.png',
-    text: 'Booooooooooring',
-    author: 'vvvopdwa',
-    date: '1 days ago'
-  },
-  {
-    emoji: './images/emoji/angry.png',
-    text: 'Very very old. Meh',
-    author: 'pkglsen',
-    date: '5 days ago'
-  },
-  {
-    emoji: './images/emoji/smile.png',
-    text: 'Almost two hours? Seriously?',
-    author: 'chowddk',
-    date: '3 days ago'
-  },
-];
+export const COMMENTS = Array.from({ length:COMMENT_COUNT }, createComment);
 
 export const POPUP = {
   title: 'Mission impossible',
