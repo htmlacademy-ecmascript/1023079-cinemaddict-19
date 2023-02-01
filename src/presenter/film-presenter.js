@@ -40,7 +40,6 @@ export default class FilmPresenter {
     } else {
       replace(this.#filmCard, prevFilmComponent);
     }
-
     if (this.#mode === Mode.OPEN) {
       this.#popup = new PopupView(comments, this.#film, this.#closePopupClickHandler.bind(this, this.#film), this.#handleControlsClick, this.#handleDeleteClick, this.#handleAddComment);
       replace(this.#popup, prevPopupComponent);
@@ -93,6 +92,7 @@ export default class FilmPresenter {
   #removePopup() {
     document.body.removeChild(this.#popup.element);
     document.removeEventListener('keydown', this.#escKeyDownHandler);
+    document.body.classList.remove('hide-overflow');
     this.#mode = Mode.DEFAULT;
   }
 

@@ -14,13 +14,13 @@ const {
 const createCommentsTemplateForPopup = (comments) => comments.map((comment) =>
   `<li class="film-details__comment">
       <span class="film-details__comment-emoji">
-      <img src="${comment.emoji}" width="55" height="55" alt="emoji-smile">
+      <img src="${comment.emotion}" width="55" height="55" alt="emoji-smile">
       </span>
       <div>
-        <p class="film-details__comment-text">${comment.text}</p>
+        <p class="film-details__comment-text">${comment.comment}</p>
         <p class="film-details__comment-info">
         <span class="film-details__comment-author">${comment.author}</span>
-        <span class="film-details__comment-day">${comment.date}</span>
+        <span class="film-details__comment-day">${comment.commentDate}</span>
         <button class="film-details__comment-delete">Delete</button>
         </p>
       </div>
@@ -48,11 +48,10 @@ const createAddCommentFormTemplate = (state) => (`
 `);
 
 export const createPopupTemplate = (film, comments, state) => {
-
   const watchlist = film.isAdded;
   const alreadyWatched = film.isWatched;
   const favorite = film.isFavorite;
-
+  console.log(comments);
   const activeWatchlistClassName = watchlist ? 'film-details__control-button--active' : '';
   const activeAsWatchedClassName = alreadyWatched ? 'film-details__control-button--active' : '';
   const activeFavoriteClassName = favorite ? 'film-details__control-button--active' : '';
@@ -66,7 +65,7 @@ export const createPopupTemplate = (film, comments, state) => {
       </div>
       <div class="film-details__info-wrap">
         <div class="film-details__poster">
-          <img class="film-details__poster-img" src=${state.poster} alt="">
+          <img class="film-details__poster-img" src=${film.poster} alt="">
 
           <p class="film-details__age">${age}</p>
         </div>
@@ -74,12 +73,12 @@ export const createPopupTemplate = (film, comments, state) => {
         <div class="film-details__info">
           <div class="film-details__info-head">
             <div class="film-details__title-wrap">
-              <h3 class="film-details__title">${state.name}</h3>
+              <h3 class="film-details__title">${film.name}</h3>
               <p class="film-details__title-original">${titleOrigin}</p>
             </div>
 
             <div class="film-details__rating">
-              <p class="film-details__total-rating">${state.rating}</p>
+              <p class="film-details__total-rating">${film.rating}</p>
             </div>
           </div>
 
@@ -98,11 +97,11 @@ export const createPopupTemplate = (film, comments, state) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${state.date}</td>
+              <td class="film-details__cell">${film.date}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Duration</td>
-              <td class="film-details__cell">${state.duration}</td>
+              <td class="film-details__cell">${film.duration}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Country</td>
@@ -111,13 +110,13 @@ export const createPopupTemplate = (film, comments, state) => {
             <tr class="film-details__row">
               <td class="film-details__term">Genres</td>
               <td class="film-details__cell">
-                <span class="film-details__genre">${state.genre}</span>
+                <span class="film-details__genre">${film.genre}</span>
                 </td>
             </tr>
           </table>
 
           <p class="film-details__film-description">
-          ${state.description}
+          ${film.description}
           </p>
         </div>
       </div>
