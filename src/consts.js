@@ -2,11 +2,18 @@ export const DATE_FORMAT = 'DD/MM/YYYY hh:mm';
 export const COMMENT_COUNT = 49;
 export const FILM_COUNT = 17;
 
+export const Emotion = {
+  SMILE: 'smile',
+  SLEEPING: 'sleeping',
+  PUKE: 'puke',
+  ANGRY: 'angry',
+};
+
 export const COMMENTS_EMOTIONS = [
-  'smile',
-  'sleeping',
-  'puke',
-  'angry'
+  Emotion.SMILE,
+  Emotion.SLEEPING,
+  Emotion.PUKE,
+  Emotion.ANGRY,
 ];
 
 export const UserAction = {

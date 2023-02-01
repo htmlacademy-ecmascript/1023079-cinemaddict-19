@@ -14,7 +14,7 @@ const {
 const createCommentsTemplateForPopup = (comments) => comments.map((comment) =>
   `<li class="film-details__comment">
       <span class="film-details__comment-emoji">
-      <img src="${comment.emotion}" width="55" height="55" alt="emoji-smile">
+      <img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-smile">
       </span>
       <div>
         <p class="film-details__comment-text">${comment.comment}</p>
@@ -51,7 +51,6 @@ export const createPopupTemplate = (film, comments, state) => {
   const watchlist = film.isAdded;
   const alreadyWatched = film.isWatched;
   const favorite = film.isFavorite;
-  console.log(comments);
   const activeWatchlistClassName = watchlist ? 'film-details__control-button--active' : '';
   const activeAsWatchedClassName = alreadyWatched ? 'film-details__control-button--active' : '';
   const activeFavoriteClassName = favorite ? 'film-details__control-button--active' : '';
