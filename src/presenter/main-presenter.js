@@ -1,11 +1,10 @@
-import { render, remove } from '../framework/render.js';
+import { render, remove, SortType} from '../framework/render.js';
 import SortView from '../view/sort-view.js';
 import FilmContainerView from '../view/films-container-view.js';
 import ShowMoreButtonView from '../view/show-more-button-view.js';
 import UserProfileView from '../view/user-profile-view.js';
 import LoadingPageView from '../view/loading-page-view';
 import FilmPresenter from './film-presenter.js';
-import { SortType } from '../framework/render.js';
 import {UpdateType, UserAction, FilterType} from '../consts.js';
 import {filter} from '../utils/filter.js';
 
@@ -33,7 +32,6 @@ export default class MainPresenter {
   constructor(
     mainContainer,
     headerContainer,
-    bodyContainer,
     filmsModel,
     commentsModel,
     filterModel

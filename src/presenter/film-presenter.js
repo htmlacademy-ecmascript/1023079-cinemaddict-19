@@ -19,7 +19,7 @@ export default class FilmPresenter {
   #currentFilterType;
   #mode = Mode.DEFAULT;
 
-  constructor(filmListContainer, onModeChange, onDataChange, currentFilterType) {
+  constructor(filmListContainer, onDataChange, onModeChange, currentFilterType) {
     this.#filmListContainer = filmListContainer;
     this.#handleDataChange = onDataChange;
     this.#handleModeChange = onModeChange;
@@ -91,7 +91,6 @@ export default class FilmPresenter {
 
   #removePopup() {
     document.body.removeChild(this.#popup.element);
-    document.body.classList.remove('hide-overflow');
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     this.#mode = Mode.DEFAULT;
   }
