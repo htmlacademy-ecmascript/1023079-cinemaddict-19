@@ -50,17 +50,17 @@ export default class PopupView extends AbstractStatefulView {
   }
 
   #controlsClickHandler = (evt) => {
-    let updatedDetails = this.#film.userDetails;
+    let updatedDetails = this.#film;
 
     switch (evt.target.id) {
       case 'watchlist':
-        updatedDetails = { ...updatedDetails, watchlist: !this.#film.userDetails.watchlist };
+        updatedDetails = { ...updatedDetails, watchlist: !this.#film.isAdded };
         break;
       case 'watched':
-        updatedDetails = { ...updatedDetails, alreadyWatched: !this.#film.userDetails.alreadyWatched };
+        updatedDetails = { ...updatedDetails, alreadyWatched: !this.#film.isWatched };
         break;
       case 'favorite':
-        updatedDetails = { ...updatedDetails, favorite: !this.#film.userDetails.favorite };
+        updatedDetails = { ...updatedDetails, favorite: !this.#film.isFavorite };
         break;
       default:
         throw new Error('Unknown state!');

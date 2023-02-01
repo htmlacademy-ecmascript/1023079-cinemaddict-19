@@ -11,9 +11,9 @@ const Mode = {
 
 export default class FilmPresenter {
   #filmListContainer;
-  #filmCard;
+  #filmCard = null;
   #film;
-  #popup;
+  #popup = null;
   #handleDataChange;
   #handleModeChange;
   #currentFilterType;
@@ -28,10 +28,12 @@ export default class FilmPresenter {
 
   init(film, comments) {
     this.#film = film;
+    this.#film.commentsCount = comments.filter((comment) => comment.id === this.#film.id).length;
+
     const prevFilmComponent = this.#filmCard;
     const prevPopupComponent = this.#popup;
 
-    this.#filmCard = new FilmCardView(this.#film, this.#openPopupClickHandler(this.#film, comments), this.#handleControlsClick, this.#currentFilterType);
+    this.#filmCard = new FilmCardView(this.#film, this.#openPopupClickHandler.bind(this, this.#film, comments), this.#handleControlsClick, this.#currentFilterType);
 
     if (prevFilmComponent === null) {
       render(this.#filmCard, this.#filmListContainer);
@@ -40,7 +42,7 @@ export default class FilmPresenter {
     }
 
     if (this.#mode === Mode.OPEN) {
-      this.#popup = new PopupView(comments, film, this.#closePopupClickHandler(film), this.#handleControlsClick, this.#handleDeleteClick, this.#handleAddComment);
+      this.#popup = new PopupView(comments, this.#film, this.#closePopupClickHandler.bind(this, this.#film), this.#handleControlsClick, this.#handleDeleteClick, this.#handleAddComment);
       replace(this.#popup, prevPopupComponent);
     }
 
@@ -67,14 +69,7 @@ export default class FilmPresenter {
   };
 
   #openPopupClickHandler(film, comments) {
-    this.#popup = new PopupView({
-      film: film,
-      comments,
-      onCloseClick: () => this.#closePopupClickHandler(film),
-      onControlsClick: this.#handleControlsClick,
-      onDeleteClick: this.#handleDeleteClick,
-      onAddComment: this.#handleAddComment
-    });
+    this.#popup = new PopupView(comments, film, this.#closePopupClickHandler, this.#handleControlsClick, this.#handleDeleteClick, this.#handleAddComment);
     this.#appendPopup();
   }
 
