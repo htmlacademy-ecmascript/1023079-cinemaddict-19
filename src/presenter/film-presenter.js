@@ -65,7 +65,8 @@ export default class FilmPresenter {
     this.#handleDataChange(
       UserAction.UPDATE_FILM,
       updateType,
-      {...this.#film, userDetails: updatedDetails});
+      updatedDetails
+    );
   };
 
   #openPopupClickHandler(film, comments) {

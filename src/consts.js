@@ -10,7 +10,7 @@ export const COMMENTS_EMOTIONS = [
 ];
 
 export const UserAction = {
-  UPDATE_COMMENT: 'UPDATE_FILM',
+  UPDATE_FILM: 'UPDATE_FILM',
   ADD_COMMENT: 'ADD_COMMENT',
   DELETE_COMMENT: 'DELETE_COMMENT',
 };
@@ -28,3 +28,8 @@ export const FilterType = {
   FAVORITES: 'favorites'
 };
 
+export const SortType = {
+  DEFAULT: 'default',
+  DATE: 'date',
+  RATING: 'rating',
+};

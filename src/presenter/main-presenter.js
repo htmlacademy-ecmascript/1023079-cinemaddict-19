@@ -41,7 +41,7 @@ export default class MainPresenter {
     this.#filmsModel = filmsModel;
     this.#commentsModel = commentsModel;
     this.#filterModel = filterModel;
-    this.#sortComponent = new SortView(this.#handleSortTypeChange);
+    this.#sortComponent = new SortView(this.#handleSortTypeChange, this.#currentSortType);
     this.#showMoreButton = new ShowMoreButtonView(this.#onShowMoreButtonClick);
 
     this.#filmsModel.addObserver(this.#handleModelEvent);

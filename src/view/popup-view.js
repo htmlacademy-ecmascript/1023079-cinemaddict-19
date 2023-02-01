@@ -33,7 +33,7 @@ export default class PopupView extends AbstractStatefulView {
     this.element.querySelector('.film-details__controls').addEventListener('click', this.#controlsClickHandler);
     this.element.querySelectorAll('.film-details__comment-delete').forEach((button) => button.addEventListener('click', this.#commentDeleteClickHandler));
 
-    this.#putHandlers();
+    this._restoreHandlers();
   }
 
   _restoreHandlers() {
