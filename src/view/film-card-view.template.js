@@ -1,5 +1,5 @@
 import { humanizeDate } from '../utils.js';
-import { FILM_CARD_DATE_FORMAT } from '../consts.js';
+import { DateFormat } from '../consts.js';
 
 
 export const createFilmCardTemplate = (film) => {
@@ -8,7 +8,7 @@ export const createFilmCardTemplate = (film) => {
   const {alreadyWatched, favorite, watchlist} = film.userDetails;
   const {date} = film.filmInfo.release;
 
-  const dateMarkup = humanizeDate(date, FILM_CARD_DATE_FORMAT);
+  const dateMarkup = humanizeDate(date, DateFormat.FILM_CARD);
 
   return (
     `<article class="film-card">

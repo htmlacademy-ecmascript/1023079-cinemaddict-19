@@ -1,10 +1,10 @@
 import { humanizeDate } from '../utils.js';
-import { COMMENTS_EMOTIONS, FILM_POPUP_DATE_FORMAT } from '../consts.js';
+import { COMMENTS_EMOTIONS, DateFormat } from '../consts.js';
 import dayjs from 'dayjs';
 
 const createInfoTemplate = (filmInfo) => {
   const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, duration, genre, description} = filmInfo;
-  const releaseDateMarkup = humanizeDate(filmInfo.release.date, FILM_POPUP_DATE_FORMAT);
+  const releaseDateMarkup = humanizeDate(filmInfo.release.date, DateFormat.FILM_POPUP);
 
   return (`
       <div class="film-details__poster">

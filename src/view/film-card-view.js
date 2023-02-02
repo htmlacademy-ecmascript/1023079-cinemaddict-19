@@ -1,7 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { createFilmCardTemplate } from './film-card-view.template.js';
 
-
 export default class FilmCardView extends AbstractView {
   #film = null;
   #handleClick = null;

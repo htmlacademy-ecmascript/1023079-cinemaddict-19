@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { COMMENTS_EMOTIONS} from '../consts.js';
 import { createFilmPopupTemplate } from './popup-view.template.js';
+import { isCtrlPlusEnterPressed } from '../utils.js';
 
 const DEFAULT_COMMENT_EMOJI = COMMENTS_EMOTIONS[0];
 
@@ -66,7 +67,7 @@ export default class PopupView extends AbstractStatefulView {
   };
 
   #addCommentKeydownHandler = (evt) => {
-    if (evt.ctrlKey && evt.code === 'Enter') {
+    if (isCtrlPlusEnterPressed) {
       const commentToAdd = {
         id: Math.random(),
         author: 'new Comm',

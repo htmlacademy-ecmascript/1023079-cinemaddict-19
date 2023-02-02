@@ -1,6 +1,3 @@
-export const FILM_COUNT = 17;
-
-
 export const UserAction = {
   UPDATE_FILM: 'UPDATE_FILM',
   ADD_COMMENT: 'ADD_FILM',
@@ -33,8 +30,7 @@ export const COMMENTS_EMOTIONS = [
   'angry'
 ];
 
-export const DEFAULT_RENDERED_FILMS_QUANTITY = 5;
-export const FILMS_TO_RENDER_QUANTITY = 5;
-
-export const FILM_CARD_DATE_FORMAT = 'YYYY';
-export const FILM_POPUP_DATE_FORMAT = 'D MMM YYYY';
+export const DateFormat = {
+  FILM_CARD: 'YYYY',
+  FILM_POPUP: 'D MMM YYYY'
+};
