@@ -8,7 +8,6 @@ export default class FiltersView extends AbstractView {
 
   constructor({filters, currentFilterType, onFilterTypeChange}) {
     super();
-
     this.#filters = filters;
     this.#currentFilter = currentFilterType;
     this.#handleFilterTypeChange = onFilterTypeChange;
@@ -21,12 +20,9 @@ export default class FiltersView extends AbstractView {
   }
 
   #filterTypeChangeHandler = (evt) => {
-    evt.preventDefault();
-
-    const newFilter = evt.target.dataset.filter;
-
-    if(newFilter) {
-      this.#handleFilterTypeChange(newFilter);
+    if (evt.target.classList.contains('main-navigation__item') && !evt.target.classList.contains('main-navigation__item--active')) {
+      this.#handleFilterTypeChange(evt.target.dataset.filterType);
     }
   };
+
 }

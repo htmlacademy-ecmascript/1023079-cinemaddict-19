@@ -1,26 +1,27 @@
-function createFilterItemTemplate(filter, currentFilterType) {
-  const {type, name, count} = filter;
+import { FilterType } from '../consts.js';
+
+const createFilterItemTemplate = (filter, currentFilterType) => {
+  const {type, name, filteredFilms} = filter;
+
   return (
-    `<a href="#${type}" class="main-navigation__item
-     ${type === currentFilterType ? 'main-navigation__item--active' : ''}"
-     data-filter = "${type}"
-     >
+    `
+    <a href="#${type}" data-filter-type="${type}"
+    class="main-navigation__item ${type === currentFilterType ? 'main-navigation__item--active' : ''}">
       ${name}
-      ${type === 'all' ? '' :
-      `<span class="main-navigation__item-count">${count}</span>`}
-     </a>`
-  );
-}
-
-export function createFiltersTemplate(filterItems, currentFilterType) {
-  const filterItemsTemplate = filterItems
-    .map((filter) => createFilterItemTemplate(filter, currentFilterType))
-    .join('');
-
-  return (
-    `<nav class="main-navigation">
-      ${filterItemsTemplate}
-    </nav>
+      <span class="main-navigation__item-count">${filteredFilms.length}</span>
+    </a>
     `
   );
-}
+};
+
+export const createFiltersTemplate = (filters, currentFilterType) => (
+  `<nav class="main-navigation">
+      <a href="#all" data-filter-type="${FilterType.ALL}"
+      class="main-navigation__item ${currentFilterType === FilterType.ALL ? 'main-navigation__item--active' : ''}">
+        All movies
+      </a>
+      ${Object.keys(filters).slice(1).map((filter) => `
+        ${createFilterItemTemplate(filters[filter], currentFilterType)}
+      `).join('')}
+   </nav>`
+);

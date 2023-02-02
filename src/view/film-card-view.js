@@ -1,56 +1,43 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { createNewFilmCardTemplate } from './film-card-view.template.js';
-import { FilterType, UpdateType} from '../consts.js';
+import { createFilmCardTemplate } from './film-card-view.template.js';
 
 
 export default class FilmCardView extends AbstractView {
+  #film = null;
+  #handleClick = null;
+  #handleControlButtonClick = null;
 
-  #film;
-  #onCardClick;
-  #currentFilterType;
-  #handleControlsClick;
-
-  constructor(film, onCardClick, onControlsClick, currentFilterType) {
+  constructor({film, onClick, onControlBtnClick}) {
     super();
     this.#film = film;
-    this.#onCardClick = onCardClick;
-    this.#handleControlsClick = onControlsClick;
-    this.#currentFilterType = currentFilterType;
 
-    this.element.querySelector('.film-card__link').addEventListener('click', this.#onCardClick);
-    this.element.querySelector('.film-card__controls').addEventListener('click', this.#controlsClickHandler);
+    this.#handleClick = onClick;
+    this.#handleControlButtonClick = onControlBtnClick;
+
+    this.element.querySelector('.film-card__link').addEventListener('click', this.#clickHandler);
+    this.element.querySelector('.film-card__controls').addEventListener('click', this.#controlButtonsClickHandler);
+
   }
 
   get template() {
-    return createNewFilmCardTemplate(this.#film);
+    return createFilmCardTemplate(this.#film);
   }
 
-  // #cardClickHandler = () => {
-  //   this.#onCardClick();
-  // };
-
-  #controlsClickHandler = (evt) => {
-    let updatedDetails = this.#film.userDetails;
-    let updateType;
-
-    switch (evt.target.dataset.control) {
-      case FilterType.WATCHLIST: {
-        updatedDetails = { ...updatedDetails, watchlist: !this.#film.isAdded };
-        updateType = this.#currentFilterType === FilterType.WATCHLIST ? UpdateType.MINOR : UpdateType.PATCH;
-        break;
-      }
-      case FilterType.HISTORY: {
-        updatedDetails = { ...updatedDetails, alreadyWatched: !this.#film.isWatched };
-        updateType = this.#currentFilterType === FilterType.HISTORY ? UpdateType.MINOR : UpdateType.PATCH;
-        break;
-      }
-      case FilterType.FAVORITE: {
-        updatedDetails = { ...updatedDetails, favorite: !this.#film.isFavorite};
-        updateType = this.#currentFilterType === FilterType.FAVORITE ? UpdateType.MINOR : UpdateType.PATCH;
-        break;
-      }
-    }
-
-    this.#handleControlsClick(updatedDetails, updateType);
+  #clickHandler = () => {
+    this.#handleClick();
   };
+
+  #controlButtonsClickHandler = (evt) => {
+    if (evt.target.classList.contains('film-card__controls-item')) {
+      this.#handleControlButtonClick({
+        ...this.#film,
+        comments: this.#film.comments.map((comment) => comment.id),
+        userDetails: {
+          ...this.#film.userDetails,
+          [evt.target.dataset.userDetail]: !this.#film.userDetails[evt.target.dataset.userDetail],
+        }
+      });
+    }
+  };
+
 }

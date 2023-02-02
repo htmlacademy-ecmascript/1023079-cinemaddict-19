@@ -1,117 +1,84 @@
-import { remove, render, replace } from '../framework/render.js';
+import { render, replace, remove } from '../framework/render.js';
 import FilmCardView from '../view/film-card-view.js';
-import PopupView from '../view/popup-view.js';
-import {UserAction, UpdateType} from '../consts.js';
-import { isEscapePush } from '../utils/utils.js';
+import PopupPresenter from './popup-presenter.js';
+import { UserAction, UpdateType } from '../consts.js';
 
-const Mode = {
-  DEFAULT: 'DEFAULT',
-  OPEN: 'OPEN',
-};
 
 export default class FilmPresenter {
-  #filmListContainer;
-  #filmCard = null;
-  #film;
-  #popup = null;
-  #handleDataChange;
-  #handleModeChange;
-  #currentFilterType;
-  #mode = Mode.DEFAULT;
+  #filmListContainer = null;
+  #handleUpdateFilmData = null;
 
-  constructor(filmListContainer, onDataChange, onModeChange, currentFilterType) {
+  #filmComponent = null;
+
+  #popupPresenter = null;
+
+  constructor({filmListContainer, onDataChange}) {
     this.#filmListContainer = filmListContainer;
-    this.#handleDataChange = onDataChange;
-    this.#handleModeChange = onModeChange;
-    this.#currentFilterType = currentFilterType;
+    this.#handleUpdateFilmData = onDataChange;
   }
 
-  init(film, comments) {
-    this.#film = film;
-    this.#film.commentsCount = comments.filter((comment) => comment.id === this.#film.id).length;
+  init(filmData, comments) {
+    const film = {
+      ...filmData,
+      comments: comments.filter((comment) => filmData.comments.includes(comment.id))
+    };
 
-    const prevFilmComponent = this.#filmCard;
-    const prevPopupComponent = this.#popup;
+    this.#popupPresenter = new PopupPresenter({
+      film,
+      onControlBtnClick: this.#handleControlButton,
+      onAddComment: this.#handleAddComment,
+      onDeleteComment: this.#handleDeleteComment
+    });
 
-    this.#filmCard = new FilmCardView(this.#film, this.#openPopupClickHandler.bind(this, this.#film, comments), this.#handleControlsClick, this.#currentFilterType);
+    const prevFilmComponent = this.#filmComponent;
+    this.#filmComponent = new FilmCardView({
+      film,
+      onClick: this.#handleClick,
+      onControlBtnClick: this.#handleControlButton,
+    });
 
     if (prevFilmComponent === null) {
-      render(this.#filmCard, this.#filmListContainer);
-    } else {
-      replace(this.#filmCard, prevFilmComponent);
+      render(this.#filmComponent, this.#filmListContainer);
+      return;
     }
-    if (this.#mode === Mode.OPEN) {
-      this.#popup = new PopupView(comments, this.#film, this.#closePopupClickHandler.bind(this, this.#film), this.#handleControlsClick, this.#handleDeleteClick, this.#handleAddComment);
-      replace(this.#popup, prevPopupComponent);
+
+    if (this.#filmListContainer.contains(prevFilmComponent.element)) {
+      replace(this.#filmComponent, prevFilmComponent);
     }
 
     remove(prevFilmComponent);
-    remove(prevPopupComponent);
   }
 
   destroy() {
-    remove(this.#filmCard);
-    remove(this.#popup);
+    remove(this.#filmComponent);
   }
 
-  reset() {
-    if (this.#mode !== Mode.DEFAULT) {
-      this.#closePopupClickHandler();
-    }
-  }
+  #handleClick = () => {
+    this.#popupPresenter.showPopup();
+  };
 
-  #handleControlsClick = (updatedDetails, updateType = UpdateType.PATCH) => {
-    this.#handleDataChange(
+  #handleControlButton = (updatedFilm) => {
+    this.#handleUpdateFilmData(
       UserAction.UPDATE_FILM,
-      updateType,
-      updatedDetails
-    );
-  };
-
-  #openPopupClickHandler(film, comments) {
-    this.#popup = new PopupView(comments, film, this.#closePopupClickHandler, this.#handleControlsClick, this.#handleDeleteClick, this.#handleAddComment);
-    this.#appendPopup();
-  }
-
-  #appendPopup() {
-    this.#handleModeChange();
-    document.body.appendChild(this.#popup.element);
-    document.body.classList.add('hide-overflow');
-    document.addEventListener('keydown', this.#escKeyDownHandler);
-    this.#mode = Mode.OPEN;
-  }
-
-  #handleDeleteClick = (id) => {
-    this.#handleDataChange(
-      UserAction.DELETE_COMMENT,
       UpdateType.PATCH,
-      id
+      updatedFilm
     );
   };
 
-  #removePopup() {
-    document.body.removeChild(this.#popup.element);
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
-    document.body.classList.remove('hide-overflow');
-    this.#mode = Mode.DEFAULT;
-  }
-
-  #closePopupClickHandler = () => {
-    this.#removePopup();
-  };
-
-  #handleAddComment = (data) => {
-    this.#handleDataChange(
+  #handleAddComment = (updatedFilm) => {
+    this.#handleUpdateFilmData(
       UserAction.ADD_COMMENT,
       UpdateType.PATCH,
-      data
+      updatedFilm
     );
   };
 
-  #escKeyDownHandler = (evt) => {
-    if (isEscapePush(evt)) {
-      evt.preventDefault();
-      this.#closePopupClickHandler();
-    }
+  #handleDeleteComment = (updatedFilm) => {
+    this.#handleUpdateFilmData(
+      UserAction.DELETE_COMMENT,
+      UpdateType.PATCH,
+      updatedFilm
+    );
   };
+
 }

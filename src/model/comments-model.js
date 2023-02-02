@@ -1,9 +1,9 @@
 import Observable from '../framework/observable.js';
 
-export default class CommentsModel extends Observable{
+export default class CommentsModel extends Observable {
   #comments = null;
 
-  constructor(comments) {
+  constructor({comments}) {
     super();
     this.#comments = comments;
   }
@@ -13,20 +13,18 @@ export default class CommentsModel extends Observable{
   }
 
   addComment(updateType, update) {
-    this.#comments = [
-      update.comment,
-      ...this.#comments,
-    ];
-    this._notify(updateType, update.film);
+    this.#comments = [...this.comments, update.commentToAdd];
+
+    delete update.commentToAdd;
+
+    this._notify(updateType, update);
   }
 
   deleteComment(updateType, update) {
-    const index = this.#comments.findIndex((comment) => comment.id === update.id);
-    if (index === -1) {
-      throw new Error('Can\'t delete unexisting comment');
-    }
+    this.#comments = this.#comments.filter((comment) => comment.id !== update.commentToDelete.id);
 
-    this.#comments = this.#comments.filter((comment) => comment.id !== update.id);
-    this._notify(updateType, update.film);
+    delete update.commentToDelete;
+
+    this._notify(updateType, update);
   }
 }

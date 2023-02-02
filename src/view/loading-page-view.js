@@ -1,15 +1,18 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { createLoadingPageTemplate } from './loading-page-view.template.js';
+import { createEmptyFilmListTemplate } from './loading-page-view.template.js';
 
-export default class LoadingPageView extends AbstractView {
-  #filterType;
+export default class EmptyFilmListView extends AbstractView {
+  #filters = null;
+  #activeFilter = null;
 
-  constructor(filterType) {
+  constructor({filters, activeFilter}) {
     super();
-    this.#filterType = filterType;
+    this.#filters = filters;
+    this.#activeFilter = activeFilter;
   }
 
   get template() {
-    return createLoadingPageTemplate(this.#filterType);
+    return createEmptyFilmListTemplate(this.#filters, this.#activeFilter);
   }
+
 }
