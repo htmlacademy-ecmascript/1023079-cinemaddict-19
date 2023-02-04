@@ -5,13 +5,17 @@ import MainPresente from './presenter/main-presenter.js';
 import FilterModel from './model/filter-model.js';
 import FilmsModel from './model/films-model.js';
 import CommentsModel from './model/comments-model.js';
+import FilmsApiService from './films-api.js';
+
+const AUTHORIZATION = 'Basic SPMsk28493';
+const END_POINT = 'https://19.ecmascript.pages.academy/cinemaddict';
 
 const siteHeader = document.querySelector('.header');
 const siteMain = document.querySelector('.main');
 
 const filmsModel = new FilmsModel({
-  films: mockFilms,
-  comments: mockComments
+  filmsApiService: new FilmsApiService(END_POINT, AUTHORIZATION),
+  mockFilms
 });
 
 const commentsModel = new CommentsModel({
