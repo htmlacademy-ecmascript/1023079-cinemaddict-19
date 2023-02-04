@@ -69,10 +69,8 @@ export default class PopupView extends AbstractStatefulView {
   #addCommentKeydownHandler = (evt) => {
     if (isCtrlPlusEnterPressed) {
       const commentToAdd = {
-        id: Math.random(),
-        author: 'new Comm',
+        id: Math.random().toString(),
         comment: he.encode(evt.target.value),
-        date: Date.now(),
         emotion: this._state.commentEmoji
       };
       this.updateElement({
@@ -89,9 +87,9 @@ export default class PopupView extends AbstractStatefulView {
 
   #deleteCommentClickHandler = (evt) => {
     if (evt.target.classList.contains('film-details__comment-delete')) {
-      const commentToDelete = this._state.comments.find((comment) => comment.id === Number(evt.target.dataset.id));
+      const commentToDelete = this._state.comments.find((comment) => comment.id === evt.target.dataset.id);
       this.updateElement({
-        comments: this._state.comments.filter((comment) => comment.id !== Number(evt.target.dataset.id)),
+        comments: this._state.comments.filter((comment) => comment.id !== evt.target.dataset.id),
         scrollPosition: this.element.scrollTop
       });
       this.#handleDeleteCommentClick({

@@ -1,11 +1,11 @@
 import UserProfileView from './view/user-profile-view.js';
 import { render } from './framework/render.js';
-import { mockComments, mockFilms } from './mock/film.js';
 import MainPresente from './presenter/main-presenter.js';
 import FilterModel from './model/filter-model.js';
 import FilmsModel from './model/films-model.js';
 import CommentsModel from './model/comments-model.js';
 import FilmsApiService from './films-api.js';
+import CommentsApiService from './comments-api.js';
 
 const AUTHORIZATION = 'Basic SPMsk28493';
 const END_POINT = 'https://19.ecmascript.pages.academy/cinemaddict';
@@ -14,17 +14,16 @@ const siteHeader = document.querySelector('.header');
 const siteMain = document.querySelector('.main');
 
 const filmsModel = new FilmsModel({
-  filmsApiService: new FilmsApiService(END_POINT, AUTHORIZATION),
-  mockFilms
+  filmsApiService: new FilmsApiService(END_POINT, AUTHORIZATION)
 });
 
 const commentsModel = new CommentsModel({
-  comments: mockComments
+  commentsApiService: new CommentsApiService(END_POINT, AUTHORIZATION)
 });
 
 const filterModel = new FilterModel();
 
-const filmsPresenter = new MainPresente({
+const mainPresenter = new MainPresente({
   filmsContainer: siteMain,
   filmsModel,
   commentsModel,
@@ -34,4 +33,5 @@ const filmsPresenter = new MainPresente({
 
 render(new UserProfileView(), siteHeader);
 
-filmsPresenter.init();
+mainPresenter.init();
+filmsModel.init();
