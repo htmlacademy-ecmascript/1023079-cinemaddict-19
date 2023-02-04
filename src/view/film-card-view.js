@@ -1,35 +1,42 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { createNewFilmCardTemplate } from './film-card-view.template.js';
-
+import { createFilmCardTemplate } from './film-card-view.template.js';
 
 export default class FilmCardView extends AbstractView {
+  #film = null;
+  #handleClick = null;
+  #handleControlButtonClick = null;
 
-  #film;
-  #onCardClick;
-  #onAddToWatchlistClick;
-  #onAddToWatchedClick;
-  #onAddToFavoriteClick;
-
-  constructor(film, onCardClick, onAddToWatchlistClick, onAddToWatchedClick, onAddToFavoriteClick) {
+  constructor({film, onClick, onControlBtnClick}) {
     super();
     this.#film = film;
-    this.#onCardClick = onCardClick;
-    this.#onAddToWatchlistClick = onAddToWatchlistClick;
-    this.#onAddToWatchedClick = onAddToWatchedClick;
-    this.#onAddToFavoriteClick = onAddToFavoriteClick;
 
-    this.element.querySelector('.film-card__link').addEventListener('click', this.#cardClickHandler);
-    this.element.querySelector('.film-card__controls-item--add-to-watchlist').addEventListener('click', this.#onAddToWatchlistClick);
-    this.element.querySelector('.film-card__controls-item--mark-as-watched').addEventListener('click', this.#onAddToWatchedClick);
-    this.element.querySelector('.film-card__controls-item--favorite').addEventListener('click', this.#onAddToFavoriteClick);
+    this.#handleClick = onClick;
+    this.#handleControlButtonClick = onControlBtnClick;
+
+    this.element.querySelector('.film-card__link').addEventListener('click', this.#clickHandler);
+    this.element.querySelector('.film-card__controls').addEventListener('click', this.#controlButtonsClickHandler);
+
   }
 
   get template() {
-    return createNewFilmCardTemplate(this.#film);
+    return createFilmCardTemplate(this.#film);
   }
 
-  #cardClickHandler = () => {
-
-    this.#onCardClick();
+  #clickHandler = () => {
+    this.#handleClick();
   };
+
+  #controlButtonsClickHandler = (evt) => {
+    if (evt.target.classList.contains('film-card__controls-item')) {
+      this.#handleControlButtonClick({
+        ...this.#film,
+        comments: this.#film.comments.map((comment) => comment.id),
+        userDetails: {
+          ...this.#film.userDetails,
+          [evt.target.dataset.userDetail]: !this.#film.userDetails[evt.target.dataset.userDetail],
+        }
+      });
+    }
+  };
+
 }

@@ -1,5 +1,2 @@
-export const createLoadingPageTemplate = () => (
-  `<h2 class="films-list__title">
-    Loading...
-  </h2>`
-);
+export const createEmptyFilmListTemplate = (filters, activeFilter) => `<h2 class="films-list__title">${filters[activeFilter].emptyFilmsMessage}</h2>`;
+

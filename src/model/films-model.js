@@ -1,12 +1,35 @@
-import { getRandomFilms } from '../utils.js';
-import { mockFilms } from '../mocks/mock.js';
+import Observable from '../framework/observable.js';
 
-const FILM_COUNT = 17;
+export default class FilmsModel extends Observable {
+  #films = null;
 
-export default class FilmsModel {
-  #films = getRandomFilms(mockFilms, FILM_COUNT);
+  constructor({films}) {
+    super();
+    this.#films = films;
+  }
 
   get films() {
     return this.#films;
   }
+
+  set films(films) {
+    this.#films = films;
+  }
+
+  updateFilm(updatedType, update) {
+    const index = this.#films.findIndex((film) => film.id === update.id);
+
+    if (index === -1) {
+      throw new Error('Can\'t update unexisting film');
+    }
+
+    this.#films = [
+      ...this.#films.slice(0, index),
+      update,
+      ...this.#films.slice(index + 1)
+    ];
+
+    this._notify(updatedType, update);
+  }
+
 }
