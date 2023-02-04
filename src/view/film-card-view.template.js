@@ -4,7 +4,8 @@ import { DateFormat } from '../consts.js';
 
 export const createFilmCardTemplate = (film) => {
   const {comments} = film;
-  const {title, totalRating, poster, duration, genre, description} = film.filmInfo;
+  const {title, totalRating, poster, duration, description} = film.filmInfo;
+  const genre = film.filmInfo.genre.join(', ');
   const {alreadyWatched, favorite, watchlist} = film.userDetails;
   const {date} = film.filmInfo.release;
 
