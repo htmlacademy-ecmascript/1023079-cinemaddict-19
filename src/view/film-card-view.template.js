@@ -1,5 +1,6 @@
 import { humanizeDate } from '../utils.js';
 import { DateFormat } from '../consts.js';
+import { getTimeFromMins } from '../utils.js';
 
 
 export const createFilmCardTemplate = (film) => {
@@ -18,7 +19,7 @@ export const createFilmCardTemplate = (film) => {
         <p class="film-card__rating">${totalRating}</p>
         <p class="film-card__info">
           <span class="film-card__year">${dateMarkup}</span>
-          <span class="film-card__duration">${duration}</span>
+          <span class="film-card__duration">${getTimeFromMins(duration)}</span>
           <span class="film-card__genre">${genre}</span>
         </p>
         <img src="${poster}" alt="" class="film-card__poster">

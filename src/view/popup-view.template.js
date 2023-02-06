@@ -1,6 +1,7 @@
 import { humanizeDate } from '../utils.js';
 import { COMMENTS_EMOTIONS, DateFormat } from '../consts.js';
 import dayjs from 'dayjs';
+import {getTimeFromMins} from '../utils.js';
 
 const createInfoTemplate = (filmInfo) => {
   const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, duration, genre, description} = filmInfo;
@@ -40,7 +41,7 @@ const createInfoTemplate = (filmInfo) => {
           </tr>
           <tr class="film-details__row">
             <td class="film-details__term">Duration</td>
-            <td class="film-details__cell">${duration}</td>
+            <td class="film-details__cell">${getTimeFromMins(duration)}</td>
           </tr>
           <tr class="film-details__row">
             <td class="film-details__term">Country</td>
