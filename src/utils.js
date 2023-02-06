@@ -13,3 +13,10 @@ export const getRandomInt = (min, max) => {
 };
 
 export const isCtrlPlusEnterPressed = (evt) => evt.ctrlKey && evt.code === 'Enter';
+
+export const getTimeFromMins = (mins) => {
+  const hours = Math.trunc(mins / 60);
+  const minutes = mins - hours * 60;
+  return `${hours }h ${ minutes }m`;
+};
+
