@@ -4,7 +4,6 @@ import { humanizeDate } from '../utils.js';
 import FilmSectionView from '../view/film-section-view.js';
 import FilmListContainerView from '../view/film-list-container-view.js';
 import FilmListView from '../view/film-list-view.js';
-// import EmptyFilmListView from '../view/empty-film-list-view.js';
 import SortView from '../view/sort-view.js';
 import ShowMoreBtnView from '../view/show-more-button-view.js';
 import FiltersPresenter from './filter-presenter.js';
@@ -62,11 +61,6 @@ export default class FilmListPresenter {
 
   init() {
     this.#renderFilters();
-    // if (this.films.length === 0) {
-    //   this.#renderFilmsContainers();
-    //   this.#renderEmptyFilmList();
-    //   return;
-    // }
     this.#renderSort();
     this.#renderFilmsContainers();
     this.renderFilms(DEFAULT_RENDERED_FILMS_QUANTITY);
@@ -145,13 +139,6 @@ export default class FilmListPresenter {
     render(this.#filmListComponent, this.#filmSectionComponent.element);
     render(this.#filmListContainerComponent, this.#filmListComponent.element);
   }
-
-  // #renderEmptyFilmList() {
-  //   render(new EmptyFilmListView({
-  //     filters: this.#filtersPresenter.filters,
-  //     activeFilter: this.#filtersPresenter.activeFilter
-  //   }), this.#filmSectionComponent.element);
-  // }
 
   #renderShowMoreBtn() {
     this.#filmShowMoreBtnComponent = new ShowMoreBtnView({

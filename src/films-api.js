@@ -19,15 +19,13 @@ export default class FilmsApiService extends ApiService {
       headers: new Headers({'Content-Type': 'application/json'}),
     });
 
-    const parsedResponse = await ApiService.parseResponse(response);
-
-    return parsedResponse;
+    return await ApiService.parseResponse(response);
   }
 
   #adaptToServer(film) {
     const adaptedFilm = {
       'id': film.id,
-      'comments': film.comments,
+      'comments': film.comments.map((comment) => comment.id),
       'film_info': {
         ...film.filmInfo,
         'age_rating': film.filmInfo.ageRating,
