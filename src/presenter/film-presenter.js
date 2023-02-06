@@ -37,7 +37,6 @@ export default class FilmPresenter {
       return;
     }
 
-    //re-render
     replace(this.#filmComponent, prevFilmComponent);
 
     remove(prevFilmComponent);
