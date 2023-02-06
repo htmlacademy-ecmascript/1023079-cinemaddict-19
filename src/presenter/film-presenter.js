@@ -17,12 +17,7 @@ export default class FilmPresenter {
     this.#handleUpdateFilmData = onDataChange;
   }
 
-  init(filmData, comments) {
-    const film = {
-      ...filmData,
-      comments: comments.filter((comment) => filmData.comments.includes(comment.id))
-    };
-
+  init(film) {
     this.#popupPresenter = new PopupPresenter({
       film,
       onControlBtnClick: this.#handleControlButton,
@@ -42,9 +37,8 @@ export default class FilmPresenter {
       return;
     }
 
-    if (this.#filmListContainer.contains(prevFilmComponent.element)) {
-      replace(this.#filmComponent, prevFilmComponent);
-    }
+    //re-render
+    replace(this.#filmComponent, prevFilmComponent);
 
     remove(prevFilmComponent);
   }
@@ -60,7 +54,7 @@ export default class FilmPresenter {
   #handleControlButton = (updatedFilm) => {
     this.#handleUpdateFilmData(
       UserAction.UPDATE_FILM,
-      UpdateType.MINOR,
+      UpdateType.PATCH,
       updatedFilm
     );
   };
