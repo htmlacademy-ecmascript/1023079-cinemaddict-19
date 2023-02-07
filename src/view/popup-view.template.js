@@ -2,6 +2,9 @@ import { humanizeDate } from '../utils.js';
 import { COMMENTS_EMOTIONS, DateFormat } from '../consts.js';
 import {getTimeFromMins, getCommentTime} from '../utils.js';
 
+const createGenresTemplate = (genres) => genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join('');
+
+
 const createInfoTemplate = (filmInfo) => {
   const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, duration, genre, description, release} = filmInfo;
   const releaseDateMarkup = humanizeDate(filmInfo.release.date, DateFormat.FILM_POPUP);
@@ -49,7 +52,7 @@ const createInfoTemplate = (filmInfo) => {
           <tr class="film-details__row">
             <td class="film-details__term">Genres</td>
             <td class="film-details__cell">
-              <span class="film-details__genre">${genre}</span>
+              <span class="film-details__genre">${createGenresTemplate(genre)}</span>
           </td>
           </tr>
         </table>
