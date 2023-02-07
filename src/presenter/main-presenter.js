@@ -1,4 +1,4 @@
-import { remove, render, RenderPosition } from '../framework/render.js';
+import { remove, render, RenderPosition, replace } from '../framework/render.js';
 import { UpdateType, UserAction, SortType, DateFormat} from '../consts';
 import { humanizeDate } from '../utils.js';
 import FilmSectionView from '../view/film-section-view.js';
@@ -9,21 +9,26 @@ import ShowMoreBtnView from '../view/show-more-button-view.js';
 import FiltersPresenter from './filter-presenter.js';
 import FilmPresenter from './film-presenter.js';
 import LoadingView from '../view/loading-view.js';
+import UserProfileView from '../view/user-profile-view.js';
+import EmptyFilmListView from '../view/empty-film-list-view.js';
 
 const DEFAULT_RENDERED_FILMS_QUANTITY = 5;
 const FILMS_TO_RENDER_QUANTITY = 5;
+const siteHeader = document.querySelector('.header');
 
 export default class FilmListPresenter {
   #filmSectionComponent = new FilmSectionView();
   #filmListComponent = new FilmListView();
   #filmListContainerComponent = new FilmListContainerView();
   #loadingComponent = new LoadingView();
+  #userProfileComponent = null;
   #sortComponent = null;
   #filmShowMoreBtnComponent = null;
   #filmsContainer = null;
   #filmsModel = null;
   #commentsModel = null;
   #filterModel = null;
+  #EmptyFilmListComponent = null;
 
   #filmPresenter = new Map();
   #filtersPresenter = null;
@@ -61,6 +66,7 @@ export default class FilmListPresenter {
 
   init() {
     this.#renderFilters();
+    this.#rerenderUserProfile();
     this.#renderSort();
     this.#renderFilmsContainers();
     this.renderFilms(DEFAULT_RENDERED_FILMS_QUANTITY);
@@ -86,6 +92,25 @@ export default class FilmListPresenter {
       return;
     }
     const filmsToRender = this.films;
+    if(!filmsToRender.length) {
+      remove(this.#filmShowMoreBtnComponent);
+      const prevEmptyListComonent = this.#EmptyFilmListComponent;
+      this.#EmptyFilmListComponent = new EmptyFilmListView({filters: this.#filtersPresenter.filters, activeFilter: this.#filterModel.filter});
+
+      if(prevEmptyListComonent === null) {
+        render(this.#EmptyFilmListComponent, this.#filmsContainer);
+        return;
+      }
+
+      remove(prevEmptyListComonent);
+      render(this.#EmptyFilmListComponent, this.#filmsContainer);
+      return;
+    }
+
+    if(this.#EmptyFilmListComponent !== null) {
+      remove(this.#EmptyFilmListComponent);
+    }
+
     const renderedFilmsQuantity = this.#filmListContainerComponent.element.children.length;
     for (let i = renderedFilmsQuantity; i < renderedFilmsQuantity + toRenderQuantity; i++) {
       this.#renderFilm(filmsToRender[i]);
@@ -95,6 +120,22 @@ export default class FilmListPresenter {
         return;
       }
     }
+  }
+
+  #rerenderUserProfile() {
+    const watchedFilmsCount = this.#filtersPresenter.filters.history.filteredFilms.length;
+    const prevUserProfileComponent = this.#userProfileComponent;
+
+    this.#userProfileComponent = new UserProfileView({watchedFilmsCount: watchedFilmsCount});
+
+    if (prevUserProfileComponent === null) {
+      render(this.#userProfileComponent, siteHeader);
+      return;
+    }
+
+    render(this.#userProfileComponent, siteHeader);
+    replace(this.#userProfileComponent, prevUserProfileComponent);
+    remove(prevUserProfileComponent);
   }
 
   #renderLoading() {
@@ -123,6 +164,7 @@ export default class FilmListPresenter {
     });
 
     this.#filtersPresenter.init();
+    this.#rerenderUserProfile();
   }
 
   #renderSort() {
@@ -180,6 +222,8 @@ export default class FilmListPresenter {
   };
 
   #handleModelEvent = (updateType, data) => {
+    this.#rerenderUserProfile();
+
     switch (updateType) {
       case UpdateType.PATCH:
         this.#commentsModel.getFilmComments(data.id).then((comments) => {

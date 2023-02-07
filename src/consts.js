@@ -35,3 +35,18 @@ export const DateFormat = {
   FILM_CARD: 'YYYY',
   FILM_POPUP: 'D MMM YYYY'
 };
+
+export const UserRank = {
+  NOVICE: 'novice',
+  FAN: 'fan',
+  MOVIE_BUFF: 'movie buff'
+};
+
+export const UserRankLimit = {
+  NOVICE: 10,
+  FAN: 20
+};
+
+export const DEFAULT_USER_RATING = 0;
+
+export const FILM_DESCRIPTION_LIMIT = 139;
