@@ -10,6 +10,7 @@ import FiltersPresenter from './filter-presenter.js';
 import FilmPresenter from './film-presenter.js';
 import LoadingView from '../view/loading-view.js';
 import UserProfileView from '../view/user-profile-view.js';
+import EmptyFilmListView from '../view/empty-film-list-view.js';
 
 const DEFAULT_RENDERED_FILMS_QUANTITY = 5;
 const FILMS_TO_RENDER_QUANTITY = 5;
@@ -27,6 +28,7 @@ export default class FilmListPresenter {
   #filmsModel = null;
   #commentsModel = null;
   #filterModel = null;
+  #EmptyFilmListComponent = null;
 
   #filmPresenter = new Map();
   #filtersPresenter = null;
@@ -90,6 +92,25 @@ export default class FilmListPresenter {
       return;
     }
     const filmsToRender = this.films;
+    if(!filmsToRender.length) {
+      remove(this.#filmShowMoreBtnComponent);
+      const prevEmptyListComonent = this.#EmptyFilmListComponent;
+      this.#EmptyFilmListComponent = new EmptyFilmListView({filters: this.#filtersPresenter.filters, activeFilter: this.#filterModel.filter});
+
+      if(prevEmptyListComonent === null) {
+        render(this.#EmptyFilmListComponent, this.#filmsContainer);
+        return;
+      }
+
+      remove(prevEmptyListComonent);
+      render(this.#EmptyFilmListComponent, this.#filmsContainer);
+      return;
+    }
+
+    if(this.#EmptyFilmListComponent !== null) {
+      remove(this.#EmptyFilmListComponent);
+    }
+
     const renderedFilmsQuantity = this.#filmListContainerComponent.element.children.length;
     for (let i = renderedFilmsQuantity; i < renderedFilmsQuantity + toRenderQuantity; i++) {
       this.#renderFilm(filmsToRender[i]);
