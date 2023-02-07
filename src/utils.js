@@ -21,6 +21,8 @@ export const getTimeFromMins = (mins) => {
   return `${hours }h ${ minutes }m`;
 };
 
+export const getCommentTime = (date) => dayjs(date).format('YYYY/M/D H:m');
+
 export const makeUserRank = (watchedFilmsCount) => {
   if (!watchedFilmsCount) {
     return null;

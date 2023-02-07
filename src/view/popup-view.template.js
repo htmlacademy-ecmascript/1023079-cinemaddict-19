@@ -1,7 +1,6 @@
 import { humanizeDate } from '../utils.js';
 import { COMMENTS_EMOTIONS, DateFormat } from '../consts.js';
-import dayjs from 'dayjs';
-import {getTimeFromMins} from '../utils.js';
+import {getTimeFromMins, getCommentTime} from '../utils.js';
 
 const createInfoTemplate = (filmInfo) => {
   const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, duration, genre, description, release} = filmInfo;
@@ -89,7 +88,7 @@ const createCommentsTemplate = (comments) => (`
         <p class="film-details__comment-text">${comment.comment}</p>
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${comment.author}</span>
-          <span class="film-details__comment-day">${dayjs(comment.date).fromNow()}</span>
+          <span class="film-details__comment-day">${getCommentTime(comment.date)}</span>
           <button class="film-details__comment-delete" data-id="${comment.id}">Delete</button>
         </p>
       </div>
