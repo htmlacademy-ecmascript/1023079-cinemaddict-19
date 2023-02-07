@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import {getTimeFromMins} from '../utils.js';
 
 const createInfoTemplate = (filmInfo) => {
-  const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, duration, genre, description} = filmInfo;
+  const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, duration, genre, description, release} = filmInfo;
   const releaseDateMarkup = humanizeDate(filmInfo.release.date, DateFormat.FILM_POPUP);
 
   return (`
@@ -45,14 +45,12 @@ const createInfoTemplate = (filmInfo) => {
           </tr>
           <tr class="film-details__row">
             <td class="film-details__term">Country</td>
-            <td class="film-details__cell">USA</td>
+            <td class="film-details__cell">${release.releaseCountry}</td>
           </tr>
           <tr class="film-details__row">
             <td class="film-details__term">Genres</td>
             <td class="film-details__cell">
               <span class="film-details__genre">${genre}</span>
-              <span class="film-details__genre">Film-Noir</span>
-              <span class="film-details__genre">Mystery</span>
           </td>
           </tr>
         </table>
