@@ -2,7 +2,6 @@ import { FilterType } from '../consts.js';
 
 const createFilterItemTemplate = (filter, currentFilterType) => {
   const {type, name, filteredFilms} = filter;
-
   return (
     `
     <a href="#${type}" data-filter-type="${type}"
