@@ -48,3 +48,5 @@ export const UserRankLimit = {
 };
 
 export const DEFAULT_USER_RATING = 0;
+
+export const FILM_DESCRIPTION_LIMIT = 139;

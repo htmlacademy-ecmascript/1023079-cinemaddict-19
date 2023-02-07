@@ -1,7 +1,5 @@
-import { humanizeDate } from '../utils.js';
-import { DateFormat } from '../consts.js';
-import { getTimeFromMins } from '../utils.js';
-
+import { humanizeDate, getTimeFromMins } from '../utils.js';
+import { DateFormat, FILM_DESCRIPTION_LIMIT } from '../consts.js';
 
 export const createFilmCardTemplate = (film) => {
   const {comments} = film;
@@ -23,7 +21,7 @@ export const createFilmCardTemplate = (film) => {
           <span class="film-card__genre">${genre}</span>
         </p>
         <img src="${poster}" alt="" class="film-card__poster">
-        <p class="film-card__description">${description}</p>
+        <p class="film-card__description">${description.length > FILM_DESCRIPTION_LIMIT ? `${description.slice(0, FILM_DESCRIPTION_LIMIT)}...` : description}</p>
         <span class="film-card__comments">${comments.length}</span>
       </a>
       <div class="film-card__controls">
