@@ -8,13 +8,6 @@ const RenderPosition = {
   AFTEREND: 'afterend',
 };
 
-/** @enum {string} Перечисление возможных способов сортировки */
-export const SortType = {
-  DEFAULT: 'default',
-  DATE: 'date',
-  RATING: 'rating'
-};
-
 /**
  * Функция для создания элемента на основе разметки
  * @param {string} template Разметка в виде строки
