@@ -24,7 +24,6 @@ export default class PopupView extends AbstractStatefulView {
     this.#handleAddCommentSubmit = onAddComment;
     this.#handleDeleteCommentClick = onDeleteComment;
 
-
     this._restoreHandlers();
   }
 
