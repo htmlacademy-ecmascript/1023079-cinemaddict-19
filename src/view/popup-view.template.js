@@ -103,7 +103,7 @@ const createCommentsTemplate = (comments) => (`
 
 const createAddCommentFormTemplate = (commentEmoji, commentText = '') => (`
     <div class="film-details__add-emoji-label">
-      <img src="./images/emoji/${commentEmoji}.png" width="30" height="30" alt="emoji">
+      ${commentEmoji ? `<img src=./images/emoji/${commentEmoji}.png width="30" height="30" alt="emoji"></img>` : ''}
     </div>
     <label class="film-details__comment-label">
       <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here"
