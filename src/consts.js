@@ -47,6 +47,4 @@ export const UserRankLimit = {
   FAN: 20
 };
 
-export const DEFAULT_USER_RATING = 0;
-
 export const FILM_DESCRIPTION_LIMIT = 139;
