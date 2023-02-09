@@ -11,10 +11,13 @@ import FilmPresenter from './film-presenter.js';
 import LoadingView from '../view/loading-view.js';
 import UserProfileView from '../view/user-profile-view.js';
 import EmptyFilmListView from '../view/empty-film-list-view.js';
+import FooterStatisticsView from '../view/footer-statistic-view.js';
 
 const DEFAULT_RENDERED_FILMS_QUANTITY = 5;
 const FILMS_TO_RENDER_QUANTITY = 5;
 const siteHeader = document.querySelector('.header');
+const footerStatisticsContainer = document.querySelector('.footer__statistics');
+
 
 export default class FilmListPresenter {
   #filmSectionComponent = new FilmSectionView();
@@ -189,6 +192,13 @@ export default class FilmListPresenter {
     render(this.#filmShowMoreBtnComponent, this.#filmListComponent.element);
   }
 
+  #renderFooterStatistics() {
+    render(new FooterStatisticsView({
+      filmsQuantity: this.#filmsModel.films.length
+    }), footerStatisticsContainer);
+  }
+
+
   #setActiveSortButton(button) {
     this.#sortComponent.element.querySelector('.sort__button--active').classList.remove('sort__button--active');
     button.classList.add('sort__button--active');
@@ -242,6 +252,7 @@ export default class FilmListPresenter {
         this.renderFilms(DEFAULT_RENDERED_FILMS_QUANTITY);
         break;
       case UpdateType.INIT:
+        this.#renderFooterStatistics();
         this.#isLoading = false;
         remove(this.#loadingComponent);
         this.renderFilms(DEFAULT_RENDERED_FILMS_QUANTITY);

@@ -1,7 +1,6 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { COMMENTS_EMOTIONS} from '../consts.js';
 import { createFilmPopupTemplate } from './popup-view.template.js';
 import { isCtrlPlusEnterPressed } from '../utils.js';
 
@@ -13,7 +12,7 @@ export default class PopupView extends AbstractStatefulView {
   #handleAddCommentSubmit = null;
   #handleDeleteCommentClick = null;
 
-  static #DEFAULT_COMMENT_EMOJI = COMMENTS_EMOTIONS[0];
+  static #DEFAULT_COMMENT_EMOJI = null;
 
   constructor({film, onCloseClick, onControlBtnClick, onAddComment, onDeleteComment}) {
     super();
@@ -23,7 +22,6 @@ export default class PopupView extends AbstractStatefulView {
     this.#handleControlButtonClick = onControlBtnClick;
     this.#handleAddCommentSubmit = onAddComment;
     this.#handleDeleteCommentClick = onDeleteComment;
-
 
     this._restoreHandlers();
   }
@@ -45,6 +43,9 @@ export default class PopupView extends AbstractStatefulView {
 
   #closeClickHandler = () => {
     this.#handleCloseClick();
+    this._setState({
+      commentText: ''
+    });
   };
 
   #controlButtonsClickHandler = (evt) => {

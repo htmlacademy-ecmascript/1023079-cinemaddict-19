@@ -1,6 +1,7 @@
 import { humanizeDate } from '../utils.js';
 import { COMMENTS_EMOTIONS, DateFormat } from '../consts.js';
 import {getTimeFromMins, getCommentTime} from '../utils.js';
+import he from 'he';
 
 const createGenresTemplate = (genres) => genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join('');
 
@@ -102,11 +103,11 @@ const createCommentsTemplate = (comments) => (`
 
 const createAddCommentFormTemplate = (commentEmoji, commentText = '') => (`
     <div class="film-details__add-emoji-label">
-      <img src="./images/emoji/${commentEmoji}.png" width="30" height="30" alt="emoji">
+      ${commentEmoji ? `<img src=./images/emoji/${commentEmoji}.png width="30" height="30" alt="emoji"></img>` : ''}
     </div>
     <label class="film-details__comment-label">
       <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here"
-        name="comment">${commentText}</textarea>
+        name="comment">${he.encode(commentText)}</textarea>
     </label>
     <div class="film-details__emoji-list">
       ${COMMENTS_EMOTIONS.map((emotion) => `
