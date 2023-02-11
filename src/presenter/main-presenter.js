@@ -55,7 +55,7 @@ export default class FilmListPresenter {
 
     switch (this.#currentSortType) {
       case SortType.DATE:
-        return filteredFilms.sort((a, b) => humanizeDate(b.filmInfo.release.date, DateFormat.FILM_CARD) - humanizeDate(a.filmInfo.release.date, DateFormat.FILM_CARD));
+        return filteredFilms.sort((a, b) => Date.parse(b.filmInfo.release.date, DateFormat.FILM_CARD) - Date.parse(a.filmInfo.release.date, DateFormat.FILM_CARD));
       case SortType.RATING:
         return filteredFilms.sort((a, b) => b.filmInfo.totalRating - a.filmInfo.totalRating);
       default:
