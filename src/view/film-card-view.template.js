@@ -22,7 +22,7 @@ export const createFilmCardTemplate = (film) => {
         </p>
         <img src="${poster}" alt="" class="film-card__poster">
         <p class="film-card__description">${description.length > FILM_DESCRIPTION_LIMIT ? `${description.slice(0, FILM_DESCRIPTION_LIMIT)}...` : description}</p>
-        <span class="film-card__comments">${comments.length} comments</span>
+        <span class="film-card__comments"> ${comments.length > 1 ? `${comments.length} comments` : `${comments.length} comment`} </span>
       </a>
       <div class="film-card__controls">
         <button class="film-card__controls-item film-card__controls-item--add-to-watchlist ${watchlist ? 'film-card__controls-item--active' : ''}" data-user-detail="watchlist" type="button">Add to watchlist</button>

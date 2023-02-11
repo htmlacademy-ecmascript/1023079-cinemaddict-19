@@ -1,6 +1,5 @@
 import { remove, render, RenderPosition, replace } from '../framework/render.js';
 import { UpdateType, UserAction, SortType, DateFormat} from '../consts';
-import { humanizeDate } from '../utils.js';
 import FilmSectionView from '../view/film-section-view.js';
 import FilmListContainerView from '../view/film-list-container-view.js';
 import FilmListView from '../view/film-list-view.js';
@@ -29,7 +28,7 @@ export default class FilmListPresenter {
   #filmShowMoreBtnComponent = null;
   #filmsContainer = null;
   #filmsModel = null;
-  #commentsModel = null;
+  #commentsModel;
   #filterModel = null;
   #EmptyFilmListComponent = null;
 
@@ -55,7 +54,7 @@ export default class FilmListPresenter {
 
     switch (this.#currentSortType) {
       case SortType.DATE:
-        return filteredFilms.sort((a, b) => humanizeDate(b.filmInfo.release.date, DateFormat.FILM_CARD) - humanizeDate(a.filmInfo.release.date, DateFormat.FILM_CARD));
+        return filteredFilms.sort((a, b) => Date.parse(b.filmInfo.release.date, DateFormat.FILM_CARD) - Date.parse(a.filmInfo.release.date, DateFormat.FILM_CARD));
       case SortType.RATING:
         return filteredFilms.sort((a, b) => b.filmInfo.totalRating - a.filmInfo.totalRating);
       default:
@@ -94,8 +93,8 @@ export default class FilmListPresenter {
       this.#renderLoading();
       return;
     }
-    const filmsToRender = this.films;
-    if(!filmsToRender.length) {
+    const films = this.films;
+    if(!films.length) {
       remove(this.#filmShowMoreBtnComponent);
       const prevEmptyListComonent = this.#EmptyFilmListComponent;
       this.#EmptyFilmListComponent = new EmptyFilmListView({filters: this.#filtersPresenter.filters, activeFilter: this.#filterModel.filter});
@@ -115,14 +114,21 @@ export default class FilmListPresenter {
     }
 
     const renderedFilmsQuantity = this.#filmListContainerComponent.element.children.length;
-    for (let i = renderedFilmsQuantity; i < renderedFilmsQuantity + toRenderQuantity; i++) {
-      this.#renderFilm(filmsToRender[i]);
-      const isLastFilm = filmsToRender[i] === filmsToRender[filmsToRender.length - 1];
-      if (isLastFilm) {
-        remove(this.#filmShowMoreBtnComponent);
-        return;
+    const filmsToRender = films.slice().splice(renderedFilmsQuantity, toRenderQuantity);
+    const commentRequests = filmsToRender.map((film) => this.#commentsModel.getFilmComments(film.id));
+    Promise.all(commentRequests).then((comments) => {
+      for (const [i, film] of filmsToRender.entries()) {
+        this.#renderFilm({
+          ...film,
+          comments: comments[i],
+        });
+        const isLastFilm = film === films[films.length - 1];
+        if (isLastFilm) {
+          remove(this.#filmShowMoreBtnComponent);
+          return;
+        }
       }
-    }
+    });
   }
 
   #rerenderUserProfile() {
