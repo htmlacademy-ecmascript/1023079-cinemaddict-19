@@ -1,6 +1,5 @@
 import { remove, render, RenderPosition, replace } from '../framework/render.js';
 import { UpdateType, UserAction, SortType, DateFormat} from '../consts';
-import { humanizeDate } from '../utils.js';
 import FilmSectionView from '../view/film-section-view.js';
 import FilmListContainerView from '../view/film-list-container-view.js';
 import FilmListView from '../view/film-list-view.js';
