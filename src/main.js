@@ -7,7 +7,7 @@ import CommentsApiService from './comments-api.js';
 // import { DEFAULT_USER_RATING } from './consts.js';
 
 const AUTHORIZATION = 'Basic SPMsk28493';
-const END_POINT = 'https://19.ecmascript.pages.academy/cinemaddict';
+const END_POINT = 'https://19.ecmascript.htmlacademy.pro/cinemaddict/';
 
 
 const siteMain = document.querySelector('.main');
